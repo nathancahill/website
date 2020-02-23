@@ -8,6 +8,7 @@
         "dev": "sapper dev",
         "build": "sapper build --legacy",
         "export": "sapper export --legacy",
+        "now-build": "sapper export --legacy && mv ./__sapper__/export ./public",
         "start": "node __sapper__/build",
         "cy:run": "cypress run",
         "cy:open": "cypress open",

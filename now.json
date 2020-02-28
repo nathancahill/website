@@ -1,0 +1,6 @@
+{
+    "env": {
+        "AIRTABLE_API_KEY": "@website_airtable_api_key",
+        "AIRTABLE_ENDPOINT": "https://api.airtable.com/v0/appeX9Su1iXB3xuia/Emails"
+    }
+}

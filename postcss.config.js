@@ -7,10 +7,9 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
     defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
 })
 
-const watch = process.env.ROLLUP_WATCH
 const plugins = [require('tailwindcss')]
 
-if (!watch) {
+if (process.env.NODE_ENV === 'production') {
     plugins.push(purgecss)
 }
 

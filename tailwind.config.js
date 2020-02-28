@@ -1,7 +1,14 @@
 module.exports = {
     theme: {
-        extend: {},
+        extend: {
+            spacing: {
+                '3px': '3px',
+            },
+        },
     },
-    variants: {},
+    variants: {
+        margin: ['responsive', 'focus'],
+        borderWidth: ['responsive', 'focus'],
+    },
     plugins: [],
 }

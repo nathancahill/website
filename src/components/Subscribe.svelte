@@ -99,3 +99,9 @@
         {/if}
     </Form>
 </Sveltik>
+
+<style>
+    svg {
+        @apply fill-current;
+    }
+</style>

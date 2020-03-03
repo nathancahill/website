@@ -1,0 +1,211 @@
+---
+title: Introducing Sveltik
+---
+
+```js exec
+import Subscribe from '../../components/Subscribe.svelte'
+```
+
+# {_metadata.title}
+
+##### <time datetime="2020-03-03">March 3, 2020</time>
+
+<br />
+
+[Sveltik](https://github.com/nathancahill/sveltik) is a Svelte library for forms. It was inspired by the React library [Formik](https://jaredpalmer.com/formik/).
+The Svelte implementation evolved out of various snippets I've been using to manage form state in Svelte
+in client projects over the past couple years. The release of Svelte 3, specifically the `let:` directive,
+allowed for a rewrite with a *much* cleaner API.
+
+Svelte has excellent built-in reactive support for forms and inputs, but once
+lifecycle methods like form submission and validation are included, things get a
+little verbose. Sveltik allows forms, inputs, validation and submission to be modularized
+behind a consistent API, while maintaining the high performance of Svelte's
+built-in reactivity.
+
+Sveltik compiles to ~11.2 kB gzipped.
+
+## Gist
+
+Sveltik manages your form's state and exposes it via `let:` directives to your HTML.
+
+```html
+<script>
+  //
+  import { Sveltik } from 'sveltik'
+
+  const initialValues = { email: '', password: '' }
+
+  const validate = values => {
+    const errors = {}
+    if (!values.email) {
+      errors.email = 'Required'
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address'
+    }
+    return errors
+  }
+
+  const onSubmit = (values, { setSubmitting }) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false)
+    }, 400)
+  }
+</script>
+
+<div>
+  <Sveltik
+    {initialValues}
+    {validate}
+    {onSubmit}
+    let:values
+    let:errors
+    let:touched
+    let:handleInput
+    let:handleBlur
+    let:handleSubmit
+    let:isSubmitting
+  >
+    <form on:submit={handleSubmit}>
+      <input
+        type="email"
+        name="email"
+        value={values.email}
+        on:input={handleInput}
+        on:blur={handleBlur}
+      />
+      {#if errors.email && touched.email}
+        {errors.email}
+      {/if}
+      <input
+        type="password"
+        name="password"
+        value={values.password}
+        on:input={handleInput}
+        on:blur={handleBlur}
+      />
+      {#if errors.password && touched.password}
+        {errors.password}
+      {/if}
+      <button type="submit" disabled={isSubmitting}>
+        Submit
+      </button>
+    </form>
+  </Sveltik>
+</div>
+```
+
+## Reducing boilerplate
+
+The verbose example above is explicit about how DOM events update the form state.
+While this low-level API is powerful for complex forms, a lot of the boilerplate
+can be simplified using `Form`, `Field` and `ErrorMessage` components.
+
+```html
+<script>
+  //
+  import { Sveltik, Form, Field, ErrorMessage } from 'sveltik'
+
+  const initialValues = { email: '', password: '' }
+
+  const validate = values => {
+    const errors = {}
+    if (!values.email) {
+      errors.email = 'Required'
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address'
+    }
+    return errors
+  }
+
+  const onSubmit = (values, { setSubmitting }) => {
+    setTimeout(() => {
+      alert(JSON.stringify(values, null, 2));
+      setSubmitting(false)
+    }, 400)
+  }
+</script>
+
+<div>
+  <Sveltik
+    {initialValues}
+    {validate}
+    {onSubmit}
+    let:isSubmitting
+  >
+    <Form>
+      <Field type="email" name="email" />
+      <ErrorMessage name="email" as="div" />
+      <Field type="password" name="password" />
+      <ErrorMessage name="password" as="div" />
+      <button type="submit" disabled={isSubmitting}>
+        Submit
+      </button>
+    </Form>
+  </Sveltik>
+</div>
+```
+
+## Low-level API
+
+Just like the `<Sveltik>` component exposes state via `let:` directives,
+`<Form>` and `<Field>` do was well. Custom inputs or interfaces with other components
+can be created with the low-level API:
+
+```html
+<Field
+  name="email"
+  let:field
+>
+  <input
+    name={field.name}
+    value={field.value}
+    type="email"
+    on:input={field.handleInput}
+    on:blur={field.handleBlur}
+  />
+</Field>
+```
+
+A lot more functionality is possible, read the [full docs in the README](https://github.com/nathancahill/sveltik) on GitHub.
+
+## Looking forward
+
+I have been very satisfied with the performance of Sveltik in production. It's 
+currently deployed on 6 client projects, with 2 more coming online soon.
+
+There are a few Svelte bugs that currently keep the bundle size at around 11 kB.
+Once these are solved, I'm estimating that the bundle size should drop by around 30%.
+
+- [Select multiple value does not get set with spread props #4392](https://github.com/sveltejs/svelte/issues/4392)
+
+This issue requires a workaround in Sveltik, rendering an entirely separate component when
+`<Field>` is used to create a `<select multiple>` element or a `<input type="number" />` element.
+
+- [Proposal: dynamic elements <svelte:element> #2324](https://github.com/sveltejs/svelte/issues/2324)
+
+This issue requires Sveltik to output HTML instead of DOM elements for `<ErrorMessage />`
+There are multiple workarounds but the dynamic elements proposal is the cleanest solution.
+
+## Roadmap
+
+Although I haven't needed it yet internally, the next step on the roadmap
+is adding support for [Yup](https://github.com/jquense/yup) for form validations.
+
+- [Add support for Yup for form validation #1](https://github.com/nathancahill/sveltik/issues/9)
+
+-----------
+
+## Stay in touch
+
+I'll be publishing a post soon on a new library I'm releasing for testing Svelte components.
+It's another tool I've been using internally over the past couple years and I'm excited to release it.
+
+<div class="mb-64 sm:mb-32">
+    <Subscribe />
+</div>

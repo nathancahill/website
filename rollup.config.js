@@ -3,9 +3,12 @@ import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
+import { mdsvex } from 'mdsvex'
+import prism from 'markdown-it-prism'
 import { terser } from 'rollup-plugin-terser'
 import sveltePreprocess from 'svelte-preprocess'
 import config from 'sapper/config/rollup'
+import path from 'path'
 import pkg from './package.json'
 
 const mode = process.env.NODE_ENV
@@ -17,6 +20,19 @@ const onwarn = (warning, _onwarn) =>
         /[/\\]@sapper[/\\]/.test(warning.message)) ||
     _onwarn(warning)
 
+const mdsvexOptions = {
+    parser: md => md.use(prism),
+    layout: path.join(__dirname, './src/routes/_post.svelte'),
+    markdownOptions: {
+        typographer: true,
+    },
+}
+
+const sveltePreprocessOptions = [
+    mdsvex(mdsvexOptions),
+    sveltePreprocess({ postcss: true }),
+]
+
 export default {
     client: {
         input: config.client.input(),
@@ -27,10 +43,11 @@ export default {
                 'process.env.NODE_ENV': JSON.stringify(mode),
             }),
             svelte({
+                extensions: ['.svelte', '.svexy'],
                 dev,
                 hydratable: true,
                 emitCss: true,
-                preprocess: [sveltePreprocess({ postcss: true })],
+                preprocess: sveltePreprocessOptions,
             }),
             resolve({
                 browser: true,
@@ -80,9 +97,10 @@ export default {
                 'process.env.NODE_ENV': JSON.stringify(mode),
             }),
             svelte({
+                extensions: ['.svelte', '.svexy'],
                 generate: 'ssr',
                 dev,
-                preprocess: [sveltePreprocess({ postcss: true })],
+                preprocess: sveltePreprocessOptions,
             }),
             resolve({
                 dedupe: ['svelte'],

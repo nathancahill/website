@@ -203,7 +203,8 @@ is adding support for [Yup](https://github.com/jquense/yup) for form validations
 
 ## Stay in touch
 
-New Svelte tool coming soon! Subscribe to the email list to read about a new testing framework for Svelte components.
+New Svelte tool coming soon! Subscribe to the email list to read about a new testing framework for Svelte components
+that I'll be publishing soon.
 
 <div class="mb-64 sm:mb-32">
     <Subscribe />

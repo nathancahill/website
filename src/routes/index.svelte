@@ -41,7 +41,7 @@
 
     <h2>Let's chat</h2>
     <p>
-        I'm keen on compiler-driven frontends (like <a href="https://svelte.dev/">Svelte</a> and <a href="https://www.gatsbyjs.org/">Gatsby</a>), data-driven backends (like <a href="http://postgrest.org/">Postgrest</a>, <a href="https://graphql.org/">GraphQL</a> and <a href="https://github.com/simonw/datasette/">Datasette</a>) and utility-first design (like <a href="https://tailwindcss.com/">Tailwind CSS</a>). If we have common interests or if you just want to say hi, shoot me a note: nathan@nathancahill.com.
+        I'm keen on compiler-driven frontends (like <a href="https://svelte.dev/">Svelte</a> and <a href="https://www.gatsbyjs.org/">Gatsby</a>), data-driven backends (like <a href="http://postgrest.org/">Postgrest</a>, <a href="https://graphql.org/">GraphQL</a> and <a href="https://github.com/simonw/datasette/">Datasette</a>), utility-first design (like <a href="https://tailwindcss.com/">Tailwind CSS</a>) and serverless functions (like <a href="https://developers.cloudflare.com/workers/">Cloudflare Workers</a> and <a href="zeit.co/">ZEIT</a>). If we have common interests or if you just want to say hi, shoot me a note: nathan@nathancahill.com.
     </p>
 
     <p>

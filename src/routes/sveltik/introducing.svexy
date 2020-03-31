@@ -182,6 +182,8 @@ currently deployed on 6 client projects, with 2 more coming online soon.
 There are a few Svelte bugs that currently keep the bundle size at around 11 kB.
 Once these are solved, I'm estimating that the bundle size should drop by around 30%.
 
+<div class="ml-4 markdown">
+
 - [Select multiple value does not get set with spread props #4392](https://github.com/sveltejs/svelte/issues/4392)
 
 This issue requires a workaround in Sveltik, rendering an entirely separate component when
@@ -192,12 +194,18 @@ This issue requires a workaround in Sveltik, rendering an entirely separate comp
 This issue requires Sveltik to output HTML instead of DOM elements for `<ErrorMessage />`
 There are multiple workarounds but the dynamic elements proposal is the cleanest solution.
 
+</div>
+
 ## Roadmap
 
 Although I haven't needed it yet internally, the next step on the roadmap
 is adding support for [Yup](https://github.com/jquense/yup) for form validations.
 
+<div class="ml-4 markdown">
+
 - [Add support for Yup for form validation #1](https://github.com/nathancahill/sveltik/issues/9)
+
+</div>
 
 -----------
 

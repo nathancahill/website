@@ -7,7 +7,6 @@
 </svelte:head>
 
 <article class="markdown max-w-2xl mx-auto">
+    <a href="/">Home</a>
     <slot></slot>
 </article>
-
-<style></style>

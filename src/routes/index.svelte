@@ -58,17 +58,53 @@
     <p>
         When I'm not working, you'll find me rock climbing, skiing or surfing with my pups.
     </p>
+</div>
 
-    <hr/>
 
-    <h2>Let's chat</h2>
-    <p>
-        I'm keen on compiler-driven frontends (like <a href="https://svelte.dev/">Svelte</a> and <a href="https://www.gatsbyjs.org/">Gatsby</a>), data-driven backends (like <a href="http://postgrest.org/">Postgrest</a>, <a href="https://graphql.org/">GraphQL</a> and <a href="https://github.com/simonw/datasette/">Datasette</a>), utility-first design (like <a href="https://tailwindcss.com/">Tailwind CSS</a>) and serverless functions (like <a href="https://developers.cloudflare.com/workers/">Cloudflare Workers</a> and <a href="zeit.co/">ZEIT</a>). If we have common interests or if you just want to say hi, shoot me a note: nathan@nathancahill.com.
-    </p>
+<h2 class="mt-12 text-2xl font-bold">Recent posts</h2>
 
-    <p>
-        I also send out occasional emails about new projects and writings.
-    </p>
+<hr class="mb-4" />
+
+<div class="max-w-screen-xl mx-auto mb-12">
+  <ul class="md:grid md:grid-cols-2 md:col-gap-8 md:row-gap-10">
+    <li>
+      <time datetime="2020-03-31" class="text-sm text-gray-600 mb-1">March 31, 2020</time>
+      <h5 class="text-lg leading-6 font-medium text-gray-900">Introducing Dainte</h5>
+      <div class="markdown">
+        <p>
+          Painless testing for Svelte components. Introducing a new testing framework for Svelte.
+        </p>
+      </div>
+      <a href="/dainte/introducing" class="font-medium text-blue-500">Read full post</a>
+    </li>
+    <li class="mt-10 md:mt-0">
+      <time datetime="2020-03-03" class="text-sm text-gray-600 mb-1">March 3, 2020</time>
+      <h5 class="text-lg leading-6 font-medium text-gray-800">Introducing Sveltik</h5>
+      <div class="markdown">
+        <p>
+          Powerful forms in Svelte, inspired by Formik. Manage your form's state and validation.
+        </p>
+      </div>
+      <a href="/sveltik/introducing" class="font-medium text-blue-500">Read full post</a>
+    </li>
+  </ul>
+</div>
+
+<div class="markdown">
+  <h2>Let's chat</h2>
+</div>
+<hr class="mb-4" />
+<div class="markdown">
+  <p>
+      I'm keen on compiler-driven frontends (like <a href="https://svelte.dev/">Svelte</a> and <a href="https://www.gatsbyjs.org/">Gatsby</a>), data-driven backends (like <a href="http://postgrest.org/">Postgrest</a>, <a href="https://graphql.org/">GraphQL</a> and <a href="https://github.com/simonw/datasette/">Datasette</a>), utility-first design (like <a href="https://tailwindcss.com/">Tailwind CSS</a>) and serverless functions (like <a href="https://developers.cloudflare.com/workers/">Cloudflare Workers</a> and <a href="zeit.co/">ZEIT</a>). If we have common interests or if you just want to say hi, shoot me a note: nathan@nathancahill.com.
+  </p>
+  <p>
+      I also send out occasional emails about new projects and writings.
+  </p>
+</div>
+
+<div class="mb-64 sm:mb-32">
+    <Subscribe />
 </div>
 
 {#if showing}
@@ -124,10 +160,6 @@
   </div>
 </div>
 {/if}
-
-<div class="mb-64 sm:mb-32">
-    <Subscribe />
-</div>
 
 <style>
     svg {

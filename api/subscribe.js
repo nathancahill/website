@@ -1,6 +1,10 @@
 require('isomorphic-fetch')
 
-const { AIRTABLE_API_KEY, AIRTABLE_ENDPOINT, ZAPIER_ENDPOINT } = process.env
+const {
+    AIRTABLE_API_KEY,
+    AIRTABLE_ENDPOINT,
+    ZAPIER_ENDPOINT_SUBSCRIBE,
+} = process.env
 
 module.exports = async (req, res) => {
     const at = fetch(AIRTABLE_ENDPOINT, {
@@ -18,7 +22,7 @@ module.exports = async (req, res) => {
         }),
     })
 
-    const z = fetch(ZAPIER_ENDPOINT, {
+    const z = fetch(ZAPIER_ENDPOINT_SUBSCRIBE, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

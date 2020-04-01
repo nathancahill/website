@@ -2,6 +2,7 @@
     "env": {
         "AIRTABLE_API_KEY": "@website_airtable_api_key",
         "AIRTABLE_ENDPOINT": "https://api.airtable.com/v0/appeX9Su1iXB3xuia/Emails",
-        "ZAPIER_ENDPOINT": "https://hooks.zapier.com/hooks/catch/1970142/omf7j2p/"
+        "ZAPIER_ENDPOINT_SUBSCRIBE": "https://hooks.zapier.com/hooks/catch/1970142/omf7j2p/",
+        "ZAPIER_ENDPOINT_UNSUBSCRIBE": "https://hooks.zapier.com/hooks/catch/1970142/omf7j2p/"
     }
 }

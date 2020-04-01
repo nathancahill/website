@@ -4,12 +4,34 @@
     import Subscribe from '../components/Subscribe.svelte'
 
     let showing = false
+    let showingMsg = false
+    let msgTitle = ''
+    let msg = ''
 
     function hide() {
         showing = false
     }
 
     onMount(() => {
+        const params = new URLSearchParams(window.location.search)
+
+        if (params.get('msg')) {
+          history.pushState(null, '', window.location.pathname)
+
+          if (params.get('msg') === 'unsubscribe') {
+            msgTitle = 'Unsubscribed'
+            msg = 'Feel free to subscribe again if you change your mind.'
+          }
+
+          setTimeout(() => {
+            showingMsg = true
+
+            setTimeout(() => {
+              showingMsg = false
+            }, 4000)
+          }, 100)
+        }
+
         setTimeout(() => {
             showing = true
         }, 1000)
@@ -77,6 +99,25 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
+
+{#if showingMsg}
+<div class="fixed z-100 top-0 inset-x-0 pt-2 sm:pt-5">
+  <div class="max-w-4xl mx-auto px-4 md:px-8" transition:slide>
+    <div class="p-2 rounded-lg bg-blue-800 shadow-lg sm:p-3">
+      <div class="flex items-center justify-between flex-wrap">
+        <div class="w-0 flex-1 flex items-center">
+          <span class="ml-0 sm:ml-3 font-medium text-white truncate">
+            <span class="text-gray-400">
+              <strong class="text-white font-semibold mr-1">{msgTitle}</strong>
+              <span class="block sm:inline md:inline xs:block">{msg}</span>
+            </span>
+          </span>
         </div>
       </div>
     </div>

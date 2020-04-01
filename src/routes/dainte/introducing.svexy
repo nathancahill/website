@@ -1,0 +1,154 @@
+---
+title: Introducing Dainte
+---
+
+```js exec
+import StayInTouch from '../../components/StayInTouch.svelte'
+```
+
+# {_metadata.title}
+
+##### <time datetime="2020-03-31">March 31, 2020</time>
+
+<br />
+
+[Dainte](https://github.com/nathancahill/dainte) is a testing framework for Svelte.
+It was inspired by the React library [Enzyme](https://github.com/airbnb/enzyme).
+Notably, and similarly to Enzyme, it allows both the runtime and SSR to be
+tested simultanously in the same test suite.
+
+## Runtime
+
+Dainte's approach is batteries-included runtime testing. For example, given a component:
+
+```html
+<!-- App.svelte -->
+<script>//
+  let answer = 42;
+
+  function add() {
+    answer += 3
+  }
+</script>
+
+<div id="answer">{answer}</div>
+<button on:click={add}>Add</button>
+```
+
+To test this component with Dainte, we instantiate the component with `dainte.mount()`.
+This function returns the mounted component instance and a [JSDOM](https://github.com/jsdom/jsdom) instance where
+the component is mounted.
+
+```js
+import { mount } from 'dainte'
+import { tick } from 'svelte'
+
+const { app, window, document } = await mount('./App.svelte')
+expect(document.querySelector('#answer').textContent).toBe('42')
+
+const event = new window.MouseEvent('click')
+document.querySelector('button').dispatchEvent(event)
+
+await tick()
+
+expect(document.querySelector('#answer').textContent).toBe('45')
+```
+
+Tests must abide by Svelte's reactive cycle, so it's necessary to await a `svelte.tick()`
+for changes to be reflected in the DOM.
+
+<br />
+
+## Component introspection
+
+Often, it's more desirable to test the logic within the component, rather than
+the rendering to DOM. To this end, Dainte supports component introspection.
+Here's the same test without relying on the DOM:
+
+```js
+import { mount } from 'dainte'
+import { tick } from 'svelte'
+
+const { app } = await mount('./App.svelte', { inspect: true })
+
+const { add } = app.inspect()
+add()
+await tick()
+
+const { answer } = app.inspect()
+expect(answer).toBe(45)
+```
+
+This bridges the divide between the compiled JavaScript runtime and the test environment runtime, allowing &mdash; not only exported
+`let` variables to be read or updated &mdash; but full component scope introspection,
+similar to setting a breakpoint within the component.
+
+Any variable or import within the component can be accessed and tested with the `inspect()` method,
+without having to trigger DOM events or run asserts against the DOM.
+
+One caveat: reactive variables update within the component, variables retrieved by `inspect()` will not. In that sense,
+you can think of `inspect()` as creating a snapshot of the component's state.
+
+<br />
+
+## Lower-level compiling
+
+Of course, `dainte.mount()` is a high-level function, returning an entire DOM
+instance alongside the component instance. Dainte also includes a lower-level
+function `dainte.compile()` to produce a compiled Svelte component class. This
+is very similar to Svelte's built-in [`svelte.compile()`](https://svelte.dev/docs#svelte_compile) and shares many of the
+same options, althrough rather than returning strings of JS and CSS, it returns a component class, ready
+to be instantiated with the DOM of your choice.
+
+```js
+import { compile } from 'dainte'
+
+const { App } = await compile('./App.svelte')
+
+const app = new App({
+    target: document.body,
+})
+```
+
+A big benefit I've experienced with the low-level options is closely matching
+the test environment with the production compile environment. See the full list of options
+in the [Dainte repo](https://github.com/nathancahill/dainte).
+
+<br />
+
+## SSR
+
+Static HTML output and SSR is an important part of Svelte components. Dainte
+makes it simple to test both side by side with `dainte.render()`:
+
+```js
+import { render } from 'dainte'
+
+const { html } = await render('./App.svelte')
+expect(html).toBe('<div id="answer">42</div>')
+```
+
+<br />
+
+## Benefits over `jest-transform-svelte`
+
+I built Dainte and have been using it on client projects as an alternative
+to [`jest-transform-svelte`](https://www.npmjs.com/package/jest-transform-svelte).
+It ticks some pain points by using a completely different approach to compiling Svelte code:
+
+<div class="ml-4 markdown mb-4">
+
+- Plays nicely with other Jest plugins by not patching `require()`
+- Every Dainte method has low-level configuration options so tests match production.
+- Introspection and state assertions without touching the DOM.
+
+</div>
+
+Read the full docs on the repo here: [github.com/nathancahill/dainte](https://github.com/nathancahill/dainte),
+and please open issues for any improvements or bug reports. And give it a star!
+
+<br />
+
+-----------
+
+<StayInTouch />

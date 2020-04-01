@@ -3,7 +3,7 @@ title: Introducing Sveltik
 ---
 
 ```js exec
-import Subscribe from '../../components/Subscribe.svelte'
+import StayInTouch from '../../components/StayInTouch.svelte'
 ```
 
 # {_metadata.title}
@@ -209,11 +209,4 @@ is adding support for [Yup](https://github.com/jquense/yup) for form validations
 
 -----------
 
-## Stay in touch
-
-The next post will be about a new Svelte testing tool I'm releasing.
-Subscribe to the email list to get notified when it's published. No spam, ever.
-
-<div class="mb-64 sm:mb-32">
-    <Subscribe />
-</div>
+<StayInTouch />

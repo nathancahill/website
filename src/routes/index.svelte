@@ -57,15 +57,15 @@
         <div class="w-0 flex-1 flex items-center">
           <span class="ml-0 sm:ml-3 font-medium text-white truncate">
             <span class="text-gray-400">
-              <strong class="text-white font-semibold mr-1">New release: Sveltik</strong>
-              <span class="block sm:inline md:hidden xs:hidden">Powerful forms in Svelte.</span>
-              <span class="hidden sm:hidden md:inline xs:block">Powerful forms in Svelte, inspired by Formik.</span>
+              <strong class="text-white font-semibold mr-1">New release: Dainte</strong>
+              <span class="block sm:inline md:hidden xs:hidden">Painless testing for Svelte.</span>
+              <span class="hidden sm:hidden md:inline xs:block">Painless testing for Svelte, inspired by Enzyme.</span>
             </span>
           </span>
         </div>
         <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
           <div class="rounded-md shadow-sm">
-            <a rel=prefetch href="/sveltik/introducing" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-800 focus:outline-none focus:underline">
+            <a rel=prefetch href="/dainte/introducing" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-800 focus:outline-none focus:underline">
               Get it now
             </a>
           </div>

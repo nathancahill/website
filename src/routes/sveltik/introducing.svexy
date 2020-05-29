@@ -31,7 +31,6 @@ Sveltik manages your form's state and exposes it via `let:` directives to your H
 
 ```html
 <script>
-    //
     import { Sveltik } from 'sveltik'
 
     const initialValues = { email: '', password: '' }
@@ -94,7 +93,6 @@ can be simplified using `Form`, `Field` and `ErrorMessage` components.
 
 ```html
 <script>
-    //
     import { Sveltik, Form, Field, ErrorMessage } from 'sveltik'
 
     const initialValues = { email: '', password: '' }

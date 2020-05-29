@@ -20,8 +20,8 @@ managing background tasks. Tasks like emailing password reset emails are started
 creating a message on SNS. The actual work is handled by a function running on ZEIT.
 
 This works fine for production. We can subscribe `project.com/api/task` manually in
-the SNS dashboard. But the per-branch deploys are trickier. 
+the SNS dashboard. But the per-branch deploys are trickier.
 
------------
+---
 
 <StayInTouch />

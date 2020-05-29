@@ -13,7 +13,7 @@
         "cy:run": "cypress run",
         "cy:open": "cypress open",
         "test": "start-server-and-test dev http://localhost:3000 cy:run",
-        "format": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.svelte\"",
+        "format": "prettier --write \"**/*.js\" \"**/*.json\" \"**/*.svelte\" \"**/*.svexy\"",
         "lint": "eslint ."
     },
     "dependencies": {

@@ -1,3 +1,9 @@
+<style>
+    svg {
+        @apply fill-current;
+    }
+</style>
+
 <script>
     import { Sveltik, Form, Field, ErrorMessage } from 'sveltik'
 
@@ -8,8 +14,7 @@
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(values),
-        })
-        .then(res => {
+        }).then(res => {
             if (!res.ok) {
                 setStatus('Sorry, something went wrong.')
 
@@ -55,12 +60,7 @@
     let:status
 >
     <Form>
-        <label
-            for="email"
-            class="block text-sm leading-5 font-medium text-gray-600"
-        >
-            Join the mailing list
-        </label>
+        <label for="email" class="block text-sm leading-5 font-medium text-gray-600">Join the mailing list</label>
         <div class="flex mt-1 mb-2 max-w-md">
             <Field
                 id="email"
@@ -68,7 +68,9 @@
                 class={`bg-white rounded-r-none focus:outline-none focus:shadow-outline border rounded-l-md py-2 px-3 block w-full appearance-none leading-normal w-full min-w-0 sm:text-sm shadow-sm focus:mr-3px ${errors.email ? 'border-red-400 focus:border-red-400 text-red-800' : 'border-gray-300 focus:border-blue-400 text-gray-700'}`}
                 type="text"
                 placeholder="jane@example.com"
-                on:input={() => { setErrors({}) }}
+                on:input={() => {
+                    setErrors({})
+                }}
             />
             <button
                 type="submit"
@@ -76,32 +78,24 @@
                 disabled={submitSuccessCount || isSubmitting || isValidating}
             >
                 {#if submitSuccessCount}
-                    Subscribed <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="ml-1"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3 1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"/></svg>
-                {:else}
-                    Subscribe
-                {/if}
+                    Subscribed
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" class="ml-1">
+                        <path
+                            d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-2.3-8.7l1.3
+                            1.29 3.3-3.3a1 1 0 0 1 1.4 1.42l-4 4a1 1 0 0 1-1.4 0l-2-2a1 1 0 0 1 1.4-1.42z"
+                        />
+                    </svg>
+                {:else}Subscribe{/if}
             </button>
         </div>
         {#if status}
-            <span
-                class="block text-sm leading-5 font-normal text-gray-500"
-            >
-                {status}
-            </span>
+            <span class="block text-sm leading-5 font-normal text-gray-500">{status}</span>
         {:else if errors.email}
             <ErrorMessage name="email" as="div" class="text-sm text-red-500" />
         {:else}
-            <span
-                class="block text-sm leading-5 font-normal text-gray-500"
-            >
+            <span class="block text-sm leading-5 font-normal text-gray-500">
                 Your email address will never be shared or sold.
             </span>
         {/if}
     </Form>
 </Sveltik>
-
-<style>
-    svg {
-        @apply fill-current;
-    }
-</style>

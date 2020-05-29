@@ -15,5 +15,12 @@ module.exports = {
                 printWidth: 120,
             },
         },
+        {
+            files: '*.svexy',
+            options: {
+                parser: 'markdown',
+                printWidth: 120,
+            },
+        },
     ],
 }

@@ -23,16 +23,17 @@ Dainte's approach is batteries-included runtime testing. For example, given a co
 
 ```html
 <!-- App.svelte -->
-<script>//
-  let answer = 42;
+<script>
+    //
+    let answer = 42
 
-  function add() {
-    answer += 3
-  }
+    function add() {
+        answer += 3
+    }
 </script>
 
 <div id="answer">{answer}</div>
-<button on:click={add}>Add</button>
+<button on:click="{add}">Add</button>
 ```
 
 To test this component with Dainte, we instantiate the component with `dainte.mount()`.
@@ -138,9 +139,9 @@ It ticks some pain points by using a completely different approach to compiling 
 
 <div class="ml-4 markdown mb-4">
 
-- Plays nicely with other Jest plugins by not patching `require()`
-- Every Dainte method has low-level configuration options so tests match production.
-- Introspection and state assertions without touching the DOM.
+-   Plays nicely with other Jest plugins by not patching `require()`
+-   Every Dainte method has low-level configuration options so tests match production.
+-   Introspection and state assertions without touching the DOM.
 
 </div>
 
@@ -149,6 +150,6 @@ and please open issues for any improvements or bug reports. And give it a star!
 
 <br />
 
------------
+---
 
 <StayInTouch />

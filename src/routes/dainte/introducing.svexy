@@ -2,11 +2,11 @@
 title: Introducing Dainte
 ---
 
-```js exec
-import StayInTouch from '../../components/StayInTouch.svelte'
-```
+<script>
+    import StayInTouch from '../../components/StayInTouch.svelte'
+</script>
 
-# {_metadata.title}
+# {title}
 
 ##### <time datetime="2020-03-31">March 31, 2020</time>
 

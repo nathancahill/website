@@ -1,0 +1,27 @@
+---
+title: Working with ZEIT and AWS SNS
+---
+
+<script>
+    import StayInTouch from '../components/StayInTouch.svelte'
+</script>
+
+# {title}
+
+##### <time datetime="2020-03-03">April 3, 2020</time>
+
+We work on a lot of function-as-a-service/serverless projects for clients. We use ZEIT for many deploys,
+especially during the initial development and prototyping phase. One feature that we've
+really enjoyed is the per-branch previews. Branches are deployed to a URL like: project-branch.now.sh.
+It allows everyone on the project to test the new feature in the same environment production runs in.
+
+We also heavily use Amazon's Simple Notification Service and Simple Queue Service for
+managing background tasks. Tasks like emailing password reset emails are started by
+creating a message on SNS. The actual work is handled by a function running on ZEIT.
+
+This works fine for production. We can subscribe `project.com/api/task` manually in
+the SNS dashboard. But the per-branch deploys are trickier. 
+
+-----------
+
+<StayInTouch />

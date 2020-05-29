@@ -1,8 +1,8 @@
+import babel from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
-import babel from 'rollup-plugin-babel'
 import { mdsvex } from 'mdsvex'
 import prism from 'markdown-it-prism'
 import { terser } from 'rollup-plugin-terser'
@@ -21,8 +21,12 @@ const onwarn = (warning, _onwarn) =>
     _onwarn(warning)
 
 const mdsvexOptions = {
+    extension: '.svexy',
     parser: md => md.use(prism),
-    layout: path.join(__dirname, './src/routes/_post.svelte'),
+    layout: {
+        index: path.join(__dirname, './src/routes/_index.svelte'),
+        _: path.join(__dirname, './src/routes/_post.svelte'),
+    },
     markdownOptions: {
         typographer: true,
     },
@@ -37,6 +41,7 @@ export default {
     client: {
         input: config.client.input(),
         output: config.client.output(),
+        preserveEntrySignatures: false,
         plugins: [
             replace({
                 'process.browser': true,
@@ -58,7 +63,7 @@ export default {
             legacy &&
                 babel({
                     extensions: ['.js', '.mjs', '.html', '.svelte'],
-                    runtimeHelpers: true,
+                    babelHelpers: 'runtime',
                     exclude: ['node_modules/@babel/**'],
                     presets: [
                         [

@@ -1,7 +1,14 @@
+---
+title: Nathan Cahill
+description: Web aesthete and open source aficionado.
+layout: index
+---
+
 <script>
     import { onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import Subscribe from '../components/Subscribe.svelte'
+    import Hidden from '../components/Hidden.svelte'
 
     let showing = false
     let showingMsg = false
@@ -37,11 +44,6 @@
         }, 1000)
     })
 </script>
-
-<svelte:head>
-    <title>Nathan Cahill</title>
-    <meta name="description" content="Web aesthete and open source aficionado.">
-</svelte:head>
 
 <div class="markdown mb-10 clearfix">
     <img src="/nathancahill.jpg" class="w-40 h-40 float-right" alt="Profile picture" />
@@ -107,59 +109,59 @@
     <Subscribe />
 </div>
 
-{#if showing}
-<div class="fixed z-100 bottom-0 inset-x-0 pb-2 sm:pb-5">
-  <div class="max-w-4xl mx-auto px-4 md:px-8" transition:slide>
-    <div class="p-2 rounded-lg bg-gray-900 shadow-lg sm:p-3">
-      <div class="flex items-center justify-between flex-wrap">
-        <div class="w-0 flex-1 flex items-center">
-          <span class="ml-0 sm:ml-3 font-medium text-white truncate">
-            <span class="text-gray-400">
-              <strong class="text-white font-semibold mr-1">New release: Dainte</strong>
-              <span class="block sm:inline md:hidden xs:hidden">Painless testing for Svelte.</span>
-              <span class="hidden sm:hidden md:inline xs:block">Painless testing for Svelte, inspired by Enzyme.</span>
+<Hidden show={showing}>
+  <div class="fixed z-100 bottom-0 inset-x-0 pb-2 sm:pb-5">
+    <div class="max-w-4xl mx-auto px-4 md:px-8" transition:slide>
+      <div class="p-2 rounded-lg bg-gray-900 shadow-lg sm:p-3">
+        <div class="flex items-center justify-between flex-wrap">
+          <div class="w-0 flex-1 flex items-center">
+            <span class="ml-0 sm:ml-3 font-medium text-white truncate">
+              <span class="text-gray-400">
+                <strong class="text-white font-semibold mr-1">New release: Dainte</strong>
+                <span class="block sm:inline md:hidden xs:hidden">Painless testing for Svelte.</span>
+                <span class="hidden sm:hidden md:inline xs:block">Painless testing for Svelte, inspired by Enzyme.</span>
+              </span>
             </span>
-          </span>
-        </div>
-        <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-          <div class="rounded-md shadow-sm">
-            <a rel=prefetch href="/dainte/introducing" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-800 focus:outline-none focus:underline">
-              Get it now
-            </a>
+          </div>
+          <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
+            <div class="rounded-md shadow-sm">
+              <a rel=prefetch href="/dainte/introducing" class="flex items-center justify-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-800 focus:outline-none focus:underline">
+                Get it now
+              </a>
+            </div>
+          </div>
+
+          <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-2 mr-1 sm:mr-0">
+            <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-gray-800" on:click={hide}>
+              <svg class="h-6 w-6 text-white" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
           </div>
         </div>
-
-        <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-2 mr-1 sm:mr-0">
-          <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-gray-800" on:click={hide}>
-            <svg class="h-6 w-6 text-white" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
   </div>
-</div>
-{/if}
+</Hidden>
 
-{#if showingMsg}
-<div class="fixed z-100 top-0 inset-x-0 pt-2 sm:pt-5">
-  <div class="max-w-4xl mx-auto px-4 md:px-8" transition:slide>
-    <div class="p-2 rounded-lg bg-blue-800 shadow-lg sm:p-3">
-      <div class="flex items-center justify-between flex-wrap">
-        <div class="w-0 flex-1 flex items-center">
-          <span class="ml-0 sm:ml-3 font-medium text-white truncate">
-            <span class="text-gray-400">
-              <strong class="text-white font-semibold mr-1">{msgTitle}</strong>
-              <span class="block sm:inline md:inline xs:block">{msg}</span>
+<Hidden show={showingMsg}>
+  <div class="fixed z-100 top-0 inset-x-0 pt-2 sm:pt-5">
+    <div class="max-w-4xl mx-auto px-4 md:px-8" transition:slide>
+      <div class="p-2 rounded-lg bg-blue-800 shadow-lg sm:p-3">
+        <div class="flex items-center justify-between flex-wrap">
+          <div class="w-0 flex-1 flex items-center">
+            <span class="ml-0 sm:ml-3 font-medium text-white truncate">
+              <span class="text-gray-400">
+                <strong class="text-white font-semibold mr-1">{msgTitle}</strong>
+                <span class="block sm:inline md:inline xs:block">{msg}</span>
+              </span>
             </span>
-          </span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-{/if}
+</Hidden>
 
 <style>
     svg {

@@ -56,9 +56,13 @@ Web aesthete and open source aficionado.
 
 <div class="markdown">
 
+<p>
+
 <em>Hello,</em> I'm Nathan Cahill &mdash; a full-stack developer and outdoor photographer.
 I live and work while travelling the world with my wife and two dogs.
 I'm an ardent champion of building towards a high&#8209;performance, low&#8209;bandwidth web.
+
+</p>
 
 When I'm not working, you'll find me rock climbing, skiing or surfing with my pups.
 
@@ -71,8 +75,22 @@ When I'm not working, you'll find me rock climbing, skiing or surfing with my pu
 <div class="max-w-screen-xl mx-auto mb-12">
   <ul class="md:grid md:grid-cols-2 md:col-gap-8 md:row-gap-10">
     <li>
+      <time datetime="2020-03-31" class="text-sm text-gray-600 mb-1">May 30, 2020</time>
+      <h5 class="text-lg leading-6 font-medium text-gray-900">
+        <a href="/vercel-sns-integration">Working with Vercel and AWS SNS</a>
+      </h5>
+<div class="markdown">
+
+Use Production and Preview deployments on Vercel with AWS SNS.
+
+</div>
+      <a href="/vercel-sns-integration" class="font-medium text-blue-500">Read full post</a>
+    </li>
+    <li class="mt-10 md:mt-0">
       <time datetime="2020-03-31" class="text-sm text-gray-600 mb-1">March 31, 2020</time>
-      <h5 class="text-lg leading-6 font-medium text-gray-900">Introducing Dainte</h5>
+      <h5 class="text-lg leading-6 font-medium text-gray-900">
+        <a href="/dainte/introducing">Introducing Dainte</a>
+    </h5>
 <div class="markdown">
 
 Painless testing for Svelte components. Introducing a new testing framework for Svelte.
@@ -80,12 +98,19 @@ Painless testing for Svelte components. Introducing a new testing framework for 
 </div>
       <a href="/dainte/introducing" class="font-medium text-blue-500">Read full post</a>
     </li>
+  </ul>
+</div>
+
+<div class="max-w-screen-xl mx-auto mb-12">
+  <ul class="md:grid md:grid-cols-2 md:col-gap-8 md:row-gap-10">
     <li class="mt-10 md:mt-0">
       <time datetime="2020-03-03" class="text-sm text-gray-600 mb-1">March 3, 2020</time>
-      <h5 class="text-lg leading-6 font-medium text-gray-800">Introducing Sveltik</h5>
+      <h5 class="text-lg leading-6 font-medium text-gray-900">
+        <a href="/sveltik/introducing">Introducing Sveltik</a>
+      </h5>
 <div class="markdown">
 
-Powerful forms in Svelte, inspired by Formik. Manage your form's state and validation.
+Powerful forms in Svelte, inspired by Formik. Manage your form’s state and validation.
 
 </div>
       <a href="/sveltik/introducing" class="font-medium text-blue-500">Read full post</a>

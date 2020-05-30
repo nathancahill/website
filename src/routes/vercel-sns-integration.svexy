@@ -10,7 +10,7 @@ title: Working with Vercel and AWS SNS
 
 # {title}
 
-##### <time datetime="2020-03-03">April 3, 2020</time>
+##### <time datetime="2020-05-30">May 30, 2020</time>
 
 <br />
 
@@ -89,14 +89,12 @@ can be customized to lock it down to only the topics you need.
 Once the IAM role is in place, add the AWS keys to the integration and configure
 the endpoints. All data is stored on Vercel as part of the integration configuration.
 
-<br />
-
 ### Filtering messages by origin
 
 Now that SNS messages are being received by all deployments, it's important to
 filter by origin, so that tasks run in the same environment that they
 were dispatched from. SNS has a nice feature for message filtering with [filter policies](https://docs.aws.amazon.com/sns/latest/dg/sns-subscription-filter-policies.html). This can be enabled in the integration by
-checking the **Filter by origin** box. Messages sent to SNS can then include the
+checking the **Filter by origin** box. Messages sent to SNS must then include the
 canonical origin (or an alias) in the `MessageAttributes`, and only matching origins
 will be delivered:
 
@@ -116,8 +114,8 @@ await sns.publish({
 ```
 
 If **Filter by origin** is enabled, messages **must** have the origin set in `MessageAttributes`,
-or no messages will be delivered. Of course, this can be disabled and any
-filtering strategy can be handled by the client.
+or no messages will be delivered. Of course, filtering can turned off and custom
+filtering strategies can be implemented by the client instead.
 
 ### Get the integration
 

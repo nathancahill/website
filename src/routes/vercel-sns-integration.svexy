@@ -1,0 +1,133 @@
+---
+title: Working with Vercel and AWS SNS
+---
+
+<script>
+    import StayInTouch from '../components/StayInTouch.svelte'
+    import Diagram1 from '../components/Diagram1.svelte'
+    import Diagram2 from '../components/Diagram2.svelte'
+</script>
+
+# {title}
+
+##### <time datetime="2020-03-03">April 3, 2020</time>
+
+<br />
+
+We work on a lot of FaaS/serverless projects for clients. We use Vercel for deploys,
+especially during the initial development and prototyping phase. It allows us
+to ship new features and iterate on them very quickly.
+
+### Per-branch previews are awesome
+
+One feature that we really enjoy is the per-branch previews. Branches are deployed to a URL like `project-branch.vercel.app`.
+It keeps all stackholders on the same page and allows them to test new features
+in the same environment as prod. Particularly nice is the immutable nature of
+each deploy. Each deploy is assigned a canonical URL by Vercel, running the exact
+version of the code that was deployed at the time.
+
+### AWS SNS is awesome
+
+We also heavily use AWS [Simple Notification Service](https://aws.amazon.com/sns/)
+and [Simple Queue Service](https://aws.amazon.com/sqs/) for background tasks.
+Tasks like emailing password reset emails are triggered by notifications on SNS.
+The actual task is handled by a webhook running on Vercel. Largely, SNS and SQS
+become the backbone of our serverless architecture.
+
+<Diagram1 />
+
+This arrangement works fine for production. We can manually register URLs like `project.com/api/task`
+to topics in the SNS dashboard. But preview deployments are trickier. If we only have the production URL `project.com`
+registered on SNS, notifications triggered by newer branches will only hit older code running in production:
+
+<Diagram2 />
+
+<br />
+
+### Registering new deployments on SNS
+
+To solve this, we wrote an [SNS integration for Vercel](https://vercel.com/integrations/sns).
+When a new branch is deployed, it registers the new deployment URL on SNS.
+URLs subscriptions are registered by topic, then by environment. Specific topics can be subscribed to
+in production, preview or both:
+
+<br />
+
+![](/diagram3.png)
+
+<br />
+
+Signing up for the integration requires creating a IAM role with permission to
+access SNS. Only three actions (`sns:Subscribe`, `sns:ListSubscriptionsByTopic` and
+`sns:ListTopics`) are required in the policy and the integration
+wizard walks you through setting it up. Here is an example policy, the resources
+can be customized to lock it down to only the topics you need.
+
+```js
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "sns:Subscribe",
+            "Resource": "arn:aws:sns:*:*:*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "sns:ListSubscriptionsByTopic",
+                "sns:ListTopics"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+Once the IAM role is in place, add the AWS keys to the integration and configure
+the endpoints. All data is stored on Vercel as part of the integration configuration.
+
+<br />
+
+### Filtering messages by origin
+
+Now that SNS messages are being received by all deployments, it's important to
+filter by origin, so that tasks run in the same environment that they
+were dispatched from. SNS has a nice feature for message filtering with [filter policies](https://docs.aws.amazon.com/sns/latest/dg/sns-subscription-filter-policies.html). This can be enabled in the integration by
+checking the **Filter by origin** box. Messages sent to SNS can then include the
+canonical origin (or an alias) in the `MessageAttributes`, and only matching origins
+will be delivered:
+
+```js
+await sns.publish({
+    Message: JSON.stringify({
+        email: 'name@example.com'
+    }),
+    TopicArn: 'arn:aws:sns:us-east-1:xxxxxxxxxx:signup',
+    MessageAttributes: {
+        origin: {
+            DataType: 'String',
+            StringValue: process.env.VERCEL_URL,
+        }
+    }
+})
+```
+
+If **Filter by origin** is enabled, messages **must** have the origin set in `MessageAttributes`,
+or no messages will be delivered. Of course, this can be disabled and any
+filtering strategy can be handled by the client.
+
+### Get the integration
+
+<div class="ml-4">
+
+- Install the integration on Vercel here: https://vercel.com/integrations/sns
+- For the curious, check out the source code here: https://github.com/nathancahill/vercel-sns-integration
+
+</div>
+
+---
+
+<StayInTouch />

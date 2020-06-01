@@ -52,7 +52,7 @@
         "rollup-plugin-terser": "^6.1.0",
         "sapper": "^0.27.13",
         "start-server-and-test": "^1.11.0",
-        "svelte": "^3.0.0",
+        "svelte": "^3.23.0",
         "svelte-preprocess": "^3.7.4",
         "sveltik": "^0.1.10",
         "tailwindcss": "^1.4.6"

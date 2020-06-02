@@ -4310,19 +4310,19 @@ svelte-preprocess@^3.7.4:
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
 
-svelte@^3.0.0, svelte@^3.23.0:
+svelte@^3.20.1, svelte@^3.23.0:
   version "3.23.0"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.23.0.tgz#bbcd6887cf588c24a975b14467455abfff9acd3f"
   integrity sha512-cnyd96bK/Nw5DnYuB1hzm5cl6+I1fpmdKOteA7KLzU9KGLsLmvWsSkSKbcntzODCLmSySN3HjcgTHRo6/rJNTw==
 
-sveltik@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/sveltik/-/sveltik-0.1.10.tgz#7b019dfa5c3bb8853c4675082bfc03668d4cfb76"
-  integrity sha512-/LLZL0oNQpv1EIOwOrWQfAp6dTERVFsENmeZ3JYdCbuQvzGu4DhlXbfXAJ4/iPVTu9A/sZcKEL4wHex0NO/nrA==
+sveltik@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/sveltik/-/sveltik-0.1.12.tgz#9bc2dbd9fdfbe017430363cab5d7a53277577dfa"
+  integrity sha512-IvBEqKg12loGwRAYjQmcTLB0q7eTHkfbTFg6Gm6HcWPbE7RpUmGXrQybqXLt+QcZNgZ7zMOO6Cf/Lfc41I+dYw==
   dependencies:
     code-red "^0.1.1"
     lodash-es "^4.0.0"
-    svelte "^3.0.0"
+    svelte "^3.20.1"
 
 symbol-observable@^1.1.0:
   version "1.2.0"

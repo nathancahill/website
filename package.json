@@ -54,7 +54,7 @@
         "start-server-and-test": "^1.11.0",
         "svelte": "^3.23.0",
         "svelte-preprocess": "^3.7.4",
-        "sveltik": "^0.1.10",
+        "sveltik": "^0.1.12",
         "tailwindcss": "^1.4.6"
     }
 }

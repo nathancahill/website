@@ -1454,16 +1454,6 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-code-red@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/code-red/-/code-red-0.1.1.tgz#033af6ae5ecc1156f6ace55ab2c4a7a393050fe3"
-  integrity sha512-2pEIyya4fxI9HxQcrl9dJl20+9He1nLeja50zkf7gK2OTTV9NpD3CgA74gzXnPqWv2zJpa6uXNSaE0haOCpOsw==
-  dependencies:
-    acorn "^7.1.0"
-    is-reference "^1.1.4"
-    periscopic "^2.0.1"
-    sourcemap-codec "^1.4.6"
-
 color-convert@^1.9.0, color-convert@^1.9.1:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -2049,7 +2039,7 @@ estree-walker@^0.6.1:
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.1.tgz#53049143f40c6eb918b23671d1fe3219f3a1b362"
   integrity sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==
 
-estree-walker@^1.0.0, estree-walker@^1.0.1:
+estree-walker@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
   integrity sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
@@ -2648,7 +2638,7 @@ is-promise@^2.1.0:
   resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
   integrity sha1-eaKp7OfwlugPNtKy87wWwf9L8/o=
 
-is-reference@^1.1.2, is-reference@^1.1.4:
+is-reference@^1.1.2:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/is-reference/-/is-reference-1.1.4.tgz#3f95849886ddb70256a3e6d062b1a68c13c51427"
   integrity sha512-uJA/CDPO3Tao3GTrxYn6AwkM4nUPJiGGYu5+cB8qbC7WGFlrKZbiRo7SFKxUAEpFUfiHofWCXBUNhvYJMh+6zw==
@@ -3399,14 +3389,6 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
-
-periscopic@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/periscopic/-/periscopic-2.0.2.tgz#17cb0fd368b6e7774cbaa62fa74897c01c7a1bf3"
-  integrity sha512-Ngkg+fjibPB9V2ss67QY3EmNd+NBoXoxUkNEsDdvo4wk4yPW0LHyRh37/L61bkifUQsbtJxrbt8DE1oLjdV9Nw==
-  dependencies:
-    estree-walker "^1.0.0"
-    is-reference "^1.1.4"
 
 picomatch@^2.2.2:
   version "2.2.2"
@@ -4325,19 +4307,18 @@ svelte-preprocess@^3.9.6:
     detect-indent "^6.0.0"
     strip-indent "^3.0.0"
 
-svelte@^3.20.1, svelte@^3.23.1:
+svelte@^3.23.0, svelte@^3.23.1:
   version "3.23.1"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.23.1.tgz#b201b9ebc25034cb23562ba284efa3e06f357b7b"
   integrity sha512-HTKVSDHcn4ztxRl3g425pwihePXkCvn4B2gO5Y3n3GHzHZWxYM9T+l/LHs7HjJjcI7Xl7/ujnfA3S45pz0qXIg==
 
-sveltik@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/sveltik/-/sveltik-0.1.12.tgz#9bc2dbd9fdfbe017430363cab5d7a53277577dfa"
-  integrity sha512-IvBEqKg12loGwRAYjQmcTLB0q7eTHkfbTFg6Gm6HcWPbE7RpUmGXrQybqXLt+QcZNgZ7zMOO6Cf/Lfc41I+dYw==
+sveltik@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/sveltik/-/sveltik-0.1.13.tgz#20d169d3a4dea18eb8caed287200e3b92eb71f0b"
+  integrity sha512-Q0E26U1bBaBIqCSWQcMfBjzbExXQVw/41bZdcRYYtU+Z51o5Ojs3R46Fw4PC3sNYSM+qBeYA4njOnlGOAjCZdQ==
   dependencies:
-    code-red "^0.1.1"
     lodash-es "^4.0.0"
-    svelte "^3.20.1"
+    svelte "^3.23.0"
 
 symbol-observable@^1.1.0:
   version "1.2.0"

@@ -53,7 +53,7 @@
         "sapper": "^0.27.16",
         "start-server-and-test": "^1.11.0",
         "svelte": "^3.23.2",
-        "svelte-preprocess": "^3.9.10",
+        "svelte-preprocess": "^3.9.11",
         "sveltik": "^0.1.13",
         "tailwindcss": "^1.4.6"
     }

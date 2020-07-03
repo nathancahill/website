@@ -35,7 +35,7 @@
         "@tailwindcss/ui": "^0.3.0",
         "autoprefixer": "^9.8.4",
         "cypress": "^4.9.0",
-        "eslint": "^7.3.1",
+        "eslint": "^7.4.0",
         "eslint-config-airbnb-base": "^14.2.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-plugin-import": "^2.22.0",

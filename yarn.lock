@@ -4140,10 +4140,10 @@ supports-color@^6.1.0:
   dependencies:
     has-flag "^3.0.0"
 
-svelte-preprocess@^4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.0.4.tgz#5ab53db3dd0eff3d0cb4773ebde3cba57d684f34"
-  integrity sha512-vshpL2ls27oSIkNAPAv1uM9VhH/9SH8SUnJiLLIjtuV5YhgPcWfriIv7cXsZ4PByozuWYH0JVwwsyK1+eFOhwg==
+svelte-preprocess@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/svelte-preprocess/-/svelte-preprocess-4.0.5.tgz#046885f8d8b4a914cd0862e55b844a12fc6eab1b"
+  integrity sha512-056G1HrGXjNracwpNVBwaLfmLN0I2Rk2T3hCANARQa32xh5bFHGNOWs8ZA6sXbkizBkiYLNPQ+p4S4M8k5JbAQ==
   dependencies:
     "@types/pug" "^2.0.4"
     "@types/sass" "^1.16.0"

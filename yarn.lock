@@ -2908,10 +2908,10 @@ map-stream@~0.1.0:
   resolved "https://registry.yarnpkg.com/map-stream/-/map-stream-0.1.0.tgz#e56aa94c4c8055a16404a0674b78f215f7c8e194"
   integrity sha1-5WqpTEyAVaFkBKBnS3jyFffI4ZQ=
 
-markdown-it-prism@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/markdown-it-prism/-/markdown-it-prism-2.0.6.tgz#b9e0d0a4a1ad883571c2fb316ba336788422b1ba"
-  integrity sha512-zkkNvfpvKz8U+7zlwwzZOjaEeLyd5/Gw55gzbeAMBqz1NZAmgMqlyz9KdEBvB/8VgtBo0km3vd6bV4a7W/NufA==
+markdown-it-prism@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/markdown-it-prism/-/markdown-it-prism-2.1.0.tgz#10ef59d19598a9b6725615005cf2601aba011500"
+  integrity sha512-e6KlAV+tD/zW8HgEOkmkFGxLpyxIXB1vNk5bRLq1AEXNVWvNE4+DlqQghugRL4Cc9bxL9Q3hnHSYTIejtUCGvA==
   dependencies:
     prismjs "1.20.0"
 

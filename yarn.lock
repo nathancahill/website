@@ -2746,10 +2746,10 @@ lazy-ass@1.6.0:
   resolved "https://registry.yarnpkg.com/lazy-ass/-/lazy-ass-1.6.0.tgz#7999655e8646c17f089fdd187d150d3324d54513"
   integrity sha1-eZllXoZGwX8In90YfRUNMyTVRRM=
 
-less@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/less/-/less-3.12.1.tgz#833a628d60a5dbed3865c1b42d9d8aaeeb8d8c2a"
-  integrity sha512-lI1s2TO4BbMwS/S45/V7K0UuKlu87ie6stg58b0PTPD7x9MDXWwyOp+xQORin2lyYwn/HX7r2o9mjPJ4rYvUIA==
+less@^3.12.2:
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/less/-/less-3.12.2.tgz#157e6dd32a68869df8859314ad38e70211af3ab4"
+  integrity sha512-+1V2PCMFkL+OIj2/HrtrvZw0BC0sYLMICJfbQjuj/K8CEnlrFX6R5cKKgzzttsZDHyxQNL1jqMREjKN3ja/E3Q==
   dependencies:
     tslib "^1.10.0"
   optionalDependencies:

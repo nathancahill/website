@@ -55,6 +55,6 @@
         "svelte": "^3.24.0",
         "svelte-preprocess": "^4.0.8",
         "sveltik": "^0.1.13",
-        "tailwindcss": "^1.5.2"
+        "tailwindcss": "^1.6.0"
     }
 }

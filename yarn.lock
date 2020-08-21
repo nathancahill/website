@@ -1069,6 +1069,11 @@
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
   integrity sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg==
 
+"@types/unist@^2.0.0", "@types/unist@^2.0.2", "@types/unist@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/unist/-/unist-2.0.3.tgz#9c088679876f374eb5983f150d4787aa6fb32d7e"
+  integrity sha512-FvUupuM3rlRsRtCN+fDudtmytGO6iHJuuRKS1Ss0pG5z8oX0diNEw94UEL7hgDbpN94rgaK5R7sWm6RrSkZuAQ==
+
 accepts@~1.3.5:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.7.tgz#531bc726517a3b2b41f850021c6cc15eaab507cd"
@@ -3010,12 +3015,14 @@ markdown-it-prism@^2.1.1:
   dependencies:
     prismjs "1.21.0"
 
-mdsvex@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.8.4.tgz#352bd6fcdf6a9ee82f3b4e1b5316e3d0c9cba96f"
-  integrity sha512-1SVDSBqOb0EBYhmLdlhIM7R6xinfiBGa3TTPv0OWXasVWGjocGUJAqKIDTpsu8crtrbFeLPzHvUbNjkaq0VKHA==
+mdsvex@^0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.8.5.tgz#69c8901decef5346d3030584113eb3e443335d48"
+  integrity sha512-u9LTVvY/b+sL8CXpklKxwu0StcgPmcA7fSD3ofbdF2q3b9DZt0Ol9zRybXKgaggDrSOMtDco7UNv40rno1/iIw==
   dependencies:
+    "@types/unist" "^2.0.3"
     prismjs "^1.17.1"
+    vfile-message "^2.0.4"
 
 merge-stream@^2.0.0:
   version "2.0.0"
@@ -4379,6 +4386,13 @@ uniq@^1.0.1:
   resolved "https://registry.yarnpkg.com/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
   integrity sha1-sxxa6CVIRKOoKBVBzisEuGWnNP8=
 
+unist-util-stringify-position@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/unist-util-stringify-position/-/unist-util-stringify-position-2.0.3.tgz#cce3bfa1cdf85ba7375d1d5b17bdc4cada9bd9da"
+  integrity sha512-3faScn5I+hy9VleOq/qNbAd6pAx7iH5jYBMS9I1HgQVijz/4mv5Bvw5iw1sC/90CODiKo81G/ps8AJrISn687g==
+  dependencies:
+    "@types/unist" "^2.0.2"
+
 universalify@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
@@ -4450,6 +4464,14 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+vfile-message@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/vfile-message/-/vfile-message-2.0.4.tgz#5b43b88171d409eae58477d13f23dd41d52c371a"
+  integrity sha512-DjssxRGkMvifUOJre00juHoP9DPWuzjxKuMDrhNbk2TdaYYBNMStsNhEOt3idrtI12VQYM/1+iM0KOzXi4pxwQ==
+  dependencies:
+    "@types/unist" "^2.0.0"
+    unist-util-stringify-position "^2.0.0"
 
 wait-on@5.2.0:
   version "5.2.0"

@@ -3810,10 +3810,10 @@ rollup-dependency-tree@0.0.11:
   resolved "https://registry.yarnpkg.com/rollup-dependency-tree/-/rollup-dependency-tree-0.0.11.tgz#0d5e012fa265668f422cb1a5a75c6b482d7dc5f9"
   integrity sha512-g+mY+9ayok0FKAzFxS9GxX6cSWOFNPYu8H37i32+dsz7tb1SYaGawzsBl1qfLBKaL2WjwowmZ72BhdybZDx79Q==
 
-rollup-plugin-svelte@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-svelte/-/rollup-plugin-svelte-6.0.0.tgz#a5b15354371ec17fe67bd4def4d4ea1b915f74cb"
-  integrity sha512-y9qtWa+iNYwXdOZqaEqz3i6k3gzofC9JXzv+WVKDOt0DLiJxJaSrlKKf4YkKG91RzTK5Lo+0fW8in9QH/DxEhA==
+rollup-plugin-svelte@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-svelte/-/rollup-plugin-svelte-6.0.1.tgz#a4fc9c19c5c4277e6dbf8e79185c4cbd6b4383bf"
+  integrity sha512-kS9/JZMBNgpKTqVKlwV8mhmGwxu8NiNf6+n5ZzdZ8yDp3+ADqjf8Au+JNEpoOn6kLlh1hLS2Gsa76k9RP57HDQ==
   dependencies:
     require-relative "^0.8.7"
     rollup-pluginutils "^2.8.2"

@@ -3052,10 +3052,10 @@ markdown-it-prism@^2.1.1:
   dependencies:
     prismjs "1.21.0"
 
-mdsvex@^0.8.7:
-  version "0.8.7"
-  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.8.7.tgz#4b85de513826ec316677ee6d25eeaa1595edbe66"
-  integrity sha512-ugrKnITfKwvrHD2lSp/W28Fm2wCGrJbQzxyAuHwZSSA34DM1NzoEgUWqB7hLKUCmR8cAI/d88MHP/JxCMjESog==
+mdsvex@^0.8.8:
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.8.8.tgz#1d7d7a9fd681a7d0f9418a24a0c282ff9f2e828d"
+  integrity sha512-T496FO26UdKs6R7oD8GkuMgFyd37M4QZmePm4mOvT5judvF5fxes7xfICIiTSKz3If1iieXVmI6XEhNI0qqi5A==
   dependencies:
     "@types/unist" "^2.0.3"
     prismjs "^1.17.1"

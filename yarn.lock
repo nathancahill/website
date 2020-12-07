@@ -4238,10 +4238,10 @@ svelte@^3.23.0, svelte@^3.31.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.31.0.tgz#13966e5f55b975bc86675469bb2c58dd0e558d97"
   integrity sha512-r+n8UJkDqoQm1b+3tA3Lh6mHXKpcfOSOuEuIo5gE2W9wQYi64RYX/qE6CZBDDsP/H4M+N426JwY7XGH4xASvGQ==
 
-sveltik@^0.1.14:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/sveltik/-/sveltik-0.1.14.tgz#9cc32d7fc4810a1f8573109f890c801ed0f488d9"
-  integrity sha512-7P6irop1XGMhKZTsGoIF/FZV8WPtGH1tv4qeKUfUI/DxO11wGAcvWB1s1BripYc7o7lCqehg6p6ZtjIk/e0Ysg==
+sveltik@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/sveltik/-/sveltik-0.1.16.tgz#cdf8667ad4eb9253607c5b293157b5378aa00d16"
+  integrity sha512-TWJhF48zijTVPqr0nCKFH4Y0DqLmqnXxQh4eqPMVwRNGInwt2JXVt98QS4LySjOwAiGL/Xfn+6LScIm9SxNjLg==
   dependencies:
     lodash-es "^4.0.0"
     svelte "^3.23.0"

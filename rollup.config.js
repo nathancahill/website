@@ -22,14 +22,12 @@ const onwarn = (warning, _onwarn) =>
 
 const mdsvexOptions = {
     extension: '.svexy',
-    parser: md => md.use(prism),
     layout: {
         index: path.join(__dirname, './src/routes/_index.svelte'),
         _: path.join(__dirname, './src/routes/_post.svelte'),
     },
-    markdownOptions: {
-        typographer: true,
-    },
+    highlight: true,
+    smartypants: true,
 }
 
 const sveltePreprocessOptions = [
@@ -48,9 +46,11 @@ export default {
                 'process.env.NODE_ENV': JSON.stringify(mode),
             }),
             svelte({
+                compilerOptions: {
+                    dev,
+                    hydratable: true,
+                },
                 extensions: ['.svelte', '.svexy'],
-                dev,
-                hydratable: true,
                 emitCss: true,
                 preprocess: sveltePreprocessOptions,
             }),
@@ -102,9 +102,11 @@ export default {
                 'process.env.NODE_ENV': JSON.stringify(mode),
             }),
             svelte({
+                compilerOptions: {
+                    dev,
+                    generate: 'ssr',
+                },
                 extensions: ['.svelte', '.svexy'],
-                generate: 'ssr',
-                dev,
                 preprocess: sveltePreprocessOptions,
             }),
             resolve({

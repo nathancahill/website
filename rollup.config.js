@@ -25,7 +25,6 @@ const mdsvexOptions = {
         index: path.join(__dirname, './src/routes/_index.svelte'),
         _: path.join(__dirname, './src/routes/_post.svelte'),
     },
-    highlight: true,
     smartypants: true,
 }
 

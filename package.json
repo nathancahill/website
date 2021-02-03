@@ -24,7 +24,7 @@
     "devDependencies": {
         "@babel/core": "^7.12.10",
         "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-        "@babel/plugin-transform-runtime": "^7.12.10",
+        "@babel/plugin-transform-runtime": "^7.12.13",
         "@babel/preset-env": "^7.12.13",
         "@babel/runtime": "^7.12.13",
         "@fullhuman/postcss-purgecss": "^3.0.0",

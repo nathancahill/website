@@ -1,0 +1,29 @@
+---
+title: Mapping Minefields in Bosnia & Herzegovina
+---
+
+<script>
+    import StayInTouch from '../components/StayInTouch.svelte'
+</script>
+
+# {title}
+
+##### <time datetime="2021-02-09">Feb 9, 2021</time>
+
+<br />
+
+The war in Bosnia & Herzegovina (BiH) ended 25 years ago, but the country is still feeling the effects. The buildings of Sarajevo are pockmarked with bullet holes from the nearly 4 year seige, blast craters from mortars are memorialized with red paint as [Sarajevo Roses](https://www.atlasobscura.com/places/sarajevo-roses). Even worse, minefields laid during the war kill and mutilate people still today.
+
+### Get started with the minefield maps
+
+<div class="ml-4">
+
+- Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
+- Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource) to use from your phone
+- For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
+
+</div>
+
+---
+
+<StayInTouch />

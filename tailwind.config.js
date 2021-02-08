@@ -8,6 +8,9 @@ module.exports = {
             xl: '1280px',
         },
         extend: {
+            height: {
+                '96': '24rem',
+            },
             fontSize: {
                 '0': '0',
             },

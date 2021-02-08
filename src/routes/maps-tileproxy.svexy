@@ -2,8 +2,32 @@
 title: Serving Maps with Cloudflare Workers
 ---
 
+<svelte:head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</svelte:head>
+
+<style>
+#map {
+  height: 400px;
+}
+</style>
+
 <script>
+    import { onMount } from 'svelte'
     import StayInTouch from '../components/StayInTouch.svelte'
+
+    onMount(async () => {
+        const L = await import('leaflet')
+        const layer = L.tileLayer('https://tileproxy.wkx.workers.dev/Aerial/{z}/{x}/{y}.jpg?key={apikey}', {opacity: 1, attribution: "Bing Maps", minZoom: 1, maxZoom: 16, apikey: 'An65NyaJsa-zNETI0mjd-I07nV-jFfl-ogpn0eXQzgdxx1aX5XCx2PhuV_xCZ2Lf'});
+        const map = L.map('map', {
+            center: [44.00002245309726, 17.700541762118256],
+            zoom: 9,
+            minZoom: 1,
+            maxZoom: 18,
+            layers: [layer],
+        });
+        map.attributionControl.setPrefix('')
+    })
 </script>
 
 # {title}
@@ -12,11 +36,18 @@ title: Serving Maps with Cloudflare Workers
 
 <br />
 
-Bing Maps is well known in the mapping industry for having one of the best aerial base layers. By combining orthographic aerial and satellite imagery they achieve detail that's not available with satellites alone. Bing also offer a very generous free tier for their tile service by simply signing up in the [Bing Maps Dev Center](https://www.bingmapsportal.com/) and creating an API key.
+Two of my favorite things, exploring the mountains and mapping, intersect outdoors with GPS apps.
+I'm always on the hunt for new, interesting maps. Gaia GPS is my go-to app for this stuff;
+I load it up with all the layers and data I can find.
 
-Bing Maps is great but they use their own tile system, appropriately called the [Bing Maps Tile System](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system) (based on the [quadtree algorithm](https://en.wikipedia.org/wiki/Quadtree)). It's incompatible with apps and software that request tiles in the Open Street Map standard, [slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames). This leads to some tricky integrations.
 
-The function for converting a slippy tile with `x` `y` and `z` keys to a quadtree key is simple on it's face:
+![](/hiking.jpg)
+
+One map that I always keep handy is Bing Maps. Don't let the "Bing" part of the name deceive you, it's well known in the mapping industry for having one of the best free aerial layers. Microsoft combines orthographic aerial and satellite imagery, giving you detail that's not available from satellites alone. The tile service for the aerial layer isn't public, but Bing offers a generous free tier through the [Bing Maps Dev Center](https://www.bingmapsportal.com/) by signing up and creating an API key.
+
+## Serving Bing Maps as Slippy Tiles
+
+To get Bing Maps up and running on Gaia GPS or other apps, tile requests need to be converted from the Open Street Map standard [slippy tiles](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) to the (appropriately named) [Bing Maps Tile System](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system). Bing's system is based on the [quadtree algorithm](https://en.wikipedia.org/wiki/Quadtree), so the function for converting a slippy tile with `x`, `y` and `z` keys to a quadtree key is simple enough:
 
 ```js
 function toQuadKey(x, y, z) {
@@ -32,17 +63,14 @@ function toQuadKey(x, y, z) {
 }
 ```
 
-The catch is that this function must run for every slippy tile request so it can be converted on the fly to a quadtree key. Additionally, zooming or panning around a map can fire off a ton of requests simultaneously. Cloudflare Workers were basically designed for this, massively parallel, running a simple JavaScript function to respond to an HTTP request.
+The catch is that this function must run for every slippy tile request so it can be converted on the fly to a quadtree key. Additionally, zooming or panning around a map can fire off a ton of requests simultaneously. Enter: [Cloudflare Workers](https://workers.cloudflare.com/). 
 
-Bing Maps puts one more roadblock in the way of simply doing that. On the first load of any Bing tile layer, the latest tile endpoint must be requested from their service with a [metadata API call](https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata).
+For the uninitiated, Cloudflare Workers were basically designed for this type of workload. A worker is simply a JavaScript function that handles an HTTP request. In this case, the worker takes the incoming HTTP tile request, transforms it to a request that Bing understands, and sends the response back to the user.
 
-```js
-fetch('https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={key}&uriScheme=https')
-```
-
-The metadata API returns a response with a list of resources, including the tile layer image URL format:
+Unforunately, Bing doesn't make it quite that easy. Before any Bing layers can be loaded, the layer endpoint must be requested from the Bing Maps [Metadata API](https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata). 
 
 ```js
+> fetch('https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={key}&uriScheme=https')
 {
   "resourceSets": [  
     {
@@ -55,12 +83,14 @@ The metadata API returns a response with a list of resources, including the tile
     }  
   ],  
   ...
-}  
+}
 ```
 
-The metadata API has a lower rate limit than normal tile requests and loading it for every tile is not be feasible. Once again, Cloudflare Workers saves the day. Using Cloudflare KV, the latest tile endpoint can be cached so it's reused for every subsequent tile request.
+The metadata API has a lower rate limit than normal tile requests and loading it for every tile is not be feasible. Cloudflare Workers are idempotent and share no state from one request to the next. Enter: [Cloudflare KV](https://developers.cloudflare.com/workers/learning/how-kv-works).
 
-The cache is keyed by imagery layer and a hash of the user's API key. By including the API key hash, the cache is bucketed by Bing Maps user:
+## Caching Imagery Metadata
+
+Using Cloudflare KV, the latest tile endpoint can be cached so it's reused for every subsequent tile request. The cache is keyed by imagery layer and a hash of the user's API key. By including the API key hash, the cache is bucketed by Bing Maps user. In this snippet, the Cloudflare KV store is injected into the runtime as a global `ENDPOINTS` variable.
 
 ```js
 async function getCacheKey(imagerySet, key) {
@@ -75,9 +105,7 @@ async function getTemplate(imagerySet, key) {
 }
 ```
 
-In this snippet, the Cloudflare KV store is injected in to the runtime as the `ENDPOINTS` variable, and the tile template is retrieved with `ENDPOINTS.get(cacheKey)`.
-
-All that's left is to connect the pieces together. When a request hits the Cloudflare Worker, the query string and URL path parameters are parsed:
+All that's left is to connect the pieces together. When a request hits the worker, the query string and URL path parameters are parsed:
 
 ```js
 const url = new URL(request.url);
@@ -92,7 +120,7 @@ const [path, imagerySet, z, x, y] = m;
 ```
 
 Then the tile URL template is retrieved from the cache,
-the `x`, `y` and `z` parameters are converted to a quadkey, and actual tile is fetched from Bing:
+the `x`, `y` and `z` parameters are converted to a quadkey, and the actual tile is fetched from Bing:
 
 ```js
 const template = await getTemplate(imagerySet, query.key);
@@ -110,21 +138,23 @@ return new Response(tile.body, {
 });
 ```
 
-The whole process is blazing fast on Cloudflare since the worker and KV store are deployed to their endpoint servers around the globe. The tile proxy is basically transparent to the end user. Even better, no user data is stored, not even logs. The user's Bing Maps API key is hashed for caching tile endpoints, but otherwise passed straight through to Bing.
+The whole process is blazing fast since the worker and data store are deployed to Cloudflare endpoints around the globe. The tile proxy is basically transparent to the end user. No user data is stored, and it runs at no cost. 
 
-The tile proxy worker is deployed here:
-
-`https://tileproxy.wkx.workers.dev/{layer}/{z}/{x}/{y}.jpg?key={apikey}`
+After writing this service almost a year ago, it's now handling around 50k requests per week with zero errors and no maintenance.
 
 ### Get started with the tile proxy
 
 <div class="ml-4">
 
 - Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
-- Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource) to use from your phone
+- Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource)
 - For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
+- Check out the Bing Maps Aerial layer loaded via Cloudflare here:
 
 </div>
+
+<div class="mt-6" id="map"></div>
+
 
 ---
 

@@ -23,8 +23,7 @@ Dainte's approach is batteries-included runtime testing. For example, given a co
 
 ```html
 <!-- App.svelte -->
-<script>
-    let answer = 42
+<script>    let answer = 42
 
     function add() {
         answer += 3

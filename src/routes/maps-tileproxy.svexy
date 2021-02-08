@@ -12,11 +12,11 @@ title: Serving Maps with Cloudflare Workers
 
 <br />
 
-Bing Maps is well known in the mapping industry for having one of the best aerial base layers. By combining orthographic aerial and satellite imagery, they achieve detail that's not available with satellites alone. They also offer a very generous free tier for their tile service, simply by signing up in the [Bing Maps Dev Center](https://www.bingmapsportal.com/) and creating an API key.
+Bing Maps is well known in the mapping industry for having one of the best aerial base layers. By combining orthographic aerial and satellite imagery they achieve detail that's not available with satellites alone. Bing also offer a very generous free tier for their tile service by simply signing up in the [Bing Maps Dev Center](https://www.bingmapsportal.com/) and creating an API key.
 
-To divide maps in to tiles, we convert geographic coordinates to pixel coordinates. Here's where things get interesting. Bing Maps uses the [Bing Maps Tile System](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system) (based on the [Quadtree algorithm](https://en.wikipedia.org/wiki/Quadtree)), while most apps and mapping libraries request tiles in the Open Street Map standard, [Slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames).
+Bing Maps is great but they use their own tile system, appropriately called the [Bing Maps Tile System](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system) (based on the [quadtree algorithm](https://en.wikipedia.org/wiki/Quadtree)). It's incompatible with apps and software that request tiles in the Open Street Map standard, [slippy map tilenames](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames). This leads to some tricky integrations.
 
-Converting from a Slippy tile request with `x` `y` and `z` keys to a Quadtree key looks like this in JavaScript:
+The function for converting a slippy tile with `x` `y` and `z` keys to a quadtree key is simple on it's face:
 
 ```js
 function toQuadKey(x, y, z) {
@@ -32,9 +32,9 @@ function toQuadKey(x, y, z) {
 }
 ```
 
-The catch is that this function must run for every single tile request, which there are a lot of when zooming or panning around a map. Cloudflare Workers were basically designed for this, running a simple JavaScript function to handle a web request.
+The catch is that this function must run for every slippy tile request so it can be converted on the fly to a quadtree key. Additionally, zooming or panning around a map can fire off a ton of requests simultaneously. Cloudflare Workers were basically designed for this, massively parallel, running a simple JavaScript function to respond to an HTTP request.
 
-Bing Maps puts one more roadblock in the way of simply doing that. On the first load of any Bing tile layer, you must request the latest tile endpoint from their service with a [metadata API call](https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata).
+Bing Maps puts one more roadblock in the way of simply doing that. On the first load of any Bing tile layer, the latest tile endpoint must be requested from their service with a [metadata API call](https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata).
 
 ```js
 fetch('https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={key}&uriScheme=https')
@@ -58,9 +58,9 @@ The metadata API returns a response with a list of resources, including the tile
 }  
 ```
 
-The metadata API has a lower rate limit than normal tile requests, and anyway, loading it for every tile would be too slow. Once again, Cloudflare Workers has the perfect solution. Using Cloudflare KV, we can cache the latest tile endpoint so it's reused on every subsequent tile request.
+The metadata API has a lower rate limit than normal tile requests and loading it for every tile is not be feasible. Once again, Cloudflare Workers saves the day. Using Cloudflare KV, the latest tile endpoint can be cached so it's reused for every subsequent tile request.
 
-The cache is keyed by imagery layer and a hash of the user's API key (if a user is banned from Bing Maps it won't take the service down for others):
+The cache is keyed by imagery layer and a hash of the user's API key. By including the API key hash, the cache is bucketed by Bing Maps user:
 
 ```js
 async function getCacheKey(imagerySet, key) {
@@ -75,9 +75,9 @@ async function getTemplate(imagerySet, key) {
 }
 ```
 
-In this snippet, the Cloudflare KV store is injected in to the runtime as the `ENDPOINTS` variable, and we retrieve the tile template with `ENDPOINTS.get(cacheKey)`.
+In this snippet, the Cloudflare KV store is injected in to the runtime as the `ENDPOINTS` variable, and the tile template is retrieved with `ENDPOINTS.get(cacheKey)`.
 
-All that's left is to connect the pieces together. When a request hits the Cloudflare Worker, we parse the query string and URL path parameters:
+All that's left is to connect the pieces together. When a request hits the Cloudflare Worker, the query string and URL path parameters are parsed:
 
 ```js
 const url = new URL(request.url);
@@ -91,8 +91,8 @@ const [path, imagerySet, z, x, y] = m;
 // [path, 'Aerial', 1, 1, 1]
 ```
 
-Then, retrieving the tile URL template from the cache,
-converting the `x`, `y` and `z` parameters to a quadkey, and actually fetching the tile from Bing:
+Then the tile URL template is retrieved from the cache,
+the `x`, `y` and `z` parameters are converted to a quadkey, and actual tile is fetched from Bing:
 
 ```js
 const template = await getTemplate(imagerySet, query.key);
@@ -110,8 +110,7 @@ return new Response(tile.body, {
 });
 ```
 
-This process is blazing fast on Cloudflare since the worker and KV store are deployed to their endpoint servers around the globe.
-Even better, no user data is stored, not even logs. The user's Bing Maps API key is hashed for caching tile endpoints, but otherwise passed straight through to Bing.
+The whole process is blazing fast on Cloudflare since the worker and KV store are deployed to their endpoint servers around the globe. The tile proxy is basically transparent to the end user. Even better, no user data is stored, not even logs. The user's Bing Maps API key is hashed for caching tile endpoints, but otherwise passed straight through to Bing.
 
 The tile proxy worker is deployed here:
 

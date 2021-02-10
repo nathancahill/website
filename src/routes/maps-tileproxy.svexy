@@ -4,6 +4,13 @@ title: Serving Maps with Cloudflare Workers
 
 <svelte:head>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <meta name="description" content="A deep dive into serving map tiles with Cloudflare Workers." />
+  <meta name="twitter:card" value="summary">
+  <meta property="og:title" content="{title}" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://nathancahill.com/maps-tileproxy" />
+  <meta property="og:image" content="https://nathancahill.com/hiking.jpg" />
+  <meta property="og:description" content="A deep dive into serving map tiles with Cloudflare Workers." /> 
 </svelte:head>
 
 <style>

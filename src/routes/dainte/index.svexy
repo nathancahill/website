@@ -1,5 +1,7 @@
 ---
 title: Dainte
+description: Painless testing for Svelte components
+path: /dainte
 ---
 
 <h1>{title}</h1>

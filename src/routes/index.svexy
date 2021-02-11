@@ -4,16 +4,38 @@ description: Web aesthete and open source aficionado.
 layout: index
 ---
 
+<script context="module">
+    export async function preload() {
+        const posts = [
+            import('./maps-tileproxy.svexy'),
+            import('./vercel-sns-integration.svexy'),
+            import('./dainte/introducing.svexy'),
+            import('./sveltik/introducing.svexy'),
+        ]
+
+        const resolved = await Promise.all(posts)
+        return { m: resolved.map(r => r.metadata) }
+    }
+</script>
+
 <script>
     import { onMount } from 'svelte'
     import { slide } from 'svelte/transition'
     import Subscribe from '../components/Subscribe.svelte'
     import Hidden from '../components/Hidden.svelte'
 
+    export let m
+
     let showing = false
     let showingMsg = false
     let msgTitle = ''
     let msg = ''
+
+    const pairs = m.reduce(function(result, value, index, array) {
+      if (index % 2 === 0)
+        result.push(array.slice(index, index + 2))
+      return result
+    }, [])
 
     function hide() {
         showing = false
@@ -72,64 +94,26 @@ When I'm not working, you'll find me rock climbing, skiing or surfing with my pu
 
 <hr class="mb-4" />
 
-<div class="max-w-screen-xl mx-auto mb-12">
+{#each pairs as pair, a}
+<div class="max-w-screen-xl mx-auto mb-8">
   <ul class="md:grid md:grid-cols-2 md:col-gap-8 md:row-gap-10">
-    <li>
-      <time datetime="2021-02-08" class="text-sm text-gray-600 mb-1">Feb 8, 2021</time>
+    {#each pair as post, b}
+    <li class="{a === 0 && b === 0 ? '' : 'mt-10 md:mt-0'}">
+      <time datetime="{post.date}" class="text-sm text-gray-600 mb-1">{post.date_hr}</time>
       <h5 class="text-lg leading-6 font-medium text-gray-900">
-        <a href="/maps-tileproxy">Serving Maps with Cloudflare Workers</a>
+        <a href="{post.path}">{post.title}</a>
       </h5>
-<div class="markdown">
+      <div class="markdown">
 
-Use Bing Maps as slippy tiles with a tile proxy running on Cloudflare.
+{post.description}
 
-</div>
-      <a href="/maps-tileproxy" class="font-medium text-blue-500">Read full post</a>
+      </div>
+      <a href="{post.path}" class="font-medium text-blue-500">Read full post</a>
     </li>
-    <li class="mt-10 md:mt-0">
-      <time datetime="2020-04-30" class="text-sm text-gray-600 mb-1">May 30, 2020</time>
-      <h5 class="text-lg leading-6 font-medium text-gray-900">
-        <a href="/vercel-sns-integration">Working with Vercel and AWS SNS</a>
-    </h5>
-<div class="markdown">
-
-Use Production and Preview deployments on Vercel with AWS SNS.
-
-</div>
-      <a href="/vercel-sns-integration" class="font-medium text-blue-500">Read full post</a>
-    </li>
+    {/each}
   </ul>
 </div>
-
-<div class="max-w-screen-xl mx-auto mb-12">
-  <ul class="md:grid md:grid-cols-2 md:col-gap-8 md:row-gap-10">
-    <li class="mt-10 md:mt-0">
-      <time datetime="2020-03-31" class="text-sm text-gray-600 mb-1">March 31, 2020</time>
-      <h5 class="text-lg leading-6 font-medium text-gray-900">
-        <a href="/dainte/introducing">Introducing Dainte</a>
-      </h5>
-<div class="markdown">
-
-Painless testing for Svelte components. Introducing a new testing framework for Svelte.
-
-</div>
-      <a href="/dainte/introducing" class="font-medium text-blue-500">Read full post</a>
-    </li>
-
-    <li class="mt-10 md:mt-0">
-      <time datetime="2020-03-03" class="text-sm text-gray-600 mb-1">March 3, 2020</time>
-      <h5 class="text-lg leading-6 font-medium text-gray-900">
-        <a href="/sveltik/introducing">Introducing Sveltik</a>
-      </h5>
-<div class="markdown">
-
-Powerful forms in Svelte, inspired by Formik. Manage your form’s state and validation.
-
-</div>
-      <a href="/sveltik/introducing" class="font-medium text-blue-500">Read full post</a>
-    </li>
-  </ul>
-</div>
+{/each}
 
 <div class="markdown">
 

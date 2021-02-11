@@ -1,5 +1,9 @@
 ---
 title: Mapping Minefields in Bosnia & Herzegovina
+description: Georeferencing minefield data and making it available to the public with map overlays.
+path: /mapping.minefields.svexy
+date: 2021-02-20
+date_hr: Feb 20, 2021
 ---
 
 <script>
@@ -13,6 +17,8 @@ title: Mapping Minefields in Bosnia & Herzegovina
 <br />
 
 The war in Bosnia & Herzegovina (BiH) ended 25 years ago, but the country is still feeling the effects. The buildings of Sarajevo are pockmarked with bullet holes from the nearly 4 year seige, blast craters from mortars are memorialized with red paint as [Sarajevo Roses](https://www.atlasobscura.com/places/sarajevo-roses). Even worse, minefields laid during the war kill and mutilate people still today.
+
+The [Bosnia & Herzegovina Mine Action Center](http://www.bhmac.org)
 
 ### Get started with the minefield maps
 

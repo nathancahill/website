@@ -1,5 +1,9 @@
 ---
 title: Introducing Dainte
+description: Painless testing for Svelte components. Introducing a new testing framework for Svelte.
+path: /dainte/introducing
+date: 2020-03-31
+date_hr: March 31, 2020
 ---
 
 <script>
@@ -8,7 +12,7 @@ title: Introducing Dainte
 
 # {title}
 
-##### <time datetime="2020-03-31">March 31, 2020</time>
+##### <time datetime="{date}">{date_hr}</time>
 
 <br />
 

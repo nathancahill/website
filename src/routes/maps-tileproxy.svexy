@@ -1,27 +1,16 @@
 ---
 title: Serving Maps with Cloudflare Workers
+description: Serve Bing Maps as slippy tiles with a tile proxy running on Cloudflare.
+path: /maps-tileproxy
+date: 2021-02-08
+date_hr: Feb 8, 2021
 ---
-
-<svelte:head>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-  <meta name="description" content="A deep dive into serving map tiles with Cloudflare Workers." />
-  <meta name="twitter:card" value="summary">
-  <meta property="og:title" content="{title}" />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://nathancahill.com/maps-tileproxy" />
-  <meta property="og:image" content="https://nathancahill.com/hiking.jpg" />
-  <meta property="og:description" content="A deep dive into serving map tiles with Cloudflare Workers." /> 
-</svelte:head>
-
-<style>
-#map {
-  height: 400px;
-}
-</style>
 
 <script>
     import { onMount } from 'svelte'
     import StayInTouch from '../components/StayInTouch.svelte'
+
+    export let path
 
     onMount(async () => {
         const L = await import('leaflet')
@@ -37,9 +26,20 @@ title: Serving Maps with Cloudflare Workers
     })
 </script>
 
+<svelte:head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <meta property="og:image" content="https://nathancahill.com/hiking.jpg" />
+</svelte:head>
+
+<style>
+#map {
+  height: 400px;
+}
+</style>
+
 # {title}
 
-##### <time datetime="2021-02-08">Feb 8, 2021</time>
+##### <time datetime="{date}">{date_hr}</time>
 
 <br />
 
@@ -48,7 +48,7 @@ I'm always on the hunt for new, interesting maps. Gaia GPS is my go-to app for t
 I load it up with all the layers and data I can find.
 
 
-![](/hiking.jpg)
+![The author hiking in the mountains](/hiking.jpg)
 
 One map that I always keep handy is Bing Maps. Don't let the "Bing" part of the name deceive you, it's well known in the mapping industry for having one of the best free aerial layers. Microsoft combines orthographic aerial and satellite imagery, giving you detail that's not available from satellites alone. The tile service for the aerial layer isn't public, but Bing offers a generous free tier through the [Bing Maps Dev Center](https://www.bingmapsportal.com/) by signing up and creating an API key.
 

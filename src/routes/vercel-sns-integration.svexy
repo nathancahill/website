@@ -1,5 +1,9 @@
 ---
 title: Working with Vercel and AWS SNS
+description: Use Production and Preview deployments on Vercel with AWS SNS.
+path: /vercel-sns-integration
+date: 2020-05-30
+date_hr: May 30, 2020
 ---
 
 <script>
@@ -10,7 +14,7 @@ title: Working with Vercel and AWS SNS
 
 # {title}
 
-##### <time datetime="2020-05-30">May 30, 2020</time>
+##### <time datetime="{date}">{date_hr}</time>
 
 <br />
 

@@ -7,7 +7,8 @@
 <svelte:head>
     <title>{title}</title>
     <meta name="description" content="{description}" />
-    <meta name="twitter:card" value="summary" />
+    <meta name="twitter:card" value="summary_large_image" />
+    <meta name="twitter:creator" value="@nathancahill" />
     <meta property="og:title" content="{title}" />
     <meta property="og:type" content="article" />
     <meta property="og:description" content="{description}" />

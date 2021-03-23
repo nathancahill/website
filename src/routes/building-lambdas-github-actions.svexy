@@ -1,0 +1,129 @@
+---
+title: Building Lambdas with GitHub Actions
+description: Using LambCI on GitHub Actions to build Lambda functions and layers.
+path: /building-lambdas-github-actions
+date: 2021-03-23
+date_hr: Mar 23, 2021
+---
+
+<script>
+    import StayInTouch from '../components/StayInTouch.svelte'
+</script>
+
+# {title}
+
+##### <time datetime="{date}">{date_hr}</time>
+
+<br />
+
+## Building a Lambda Function
+
+More often than not, project dependencies must be built and bundled in an environment matching AWS Lambda
+for code to be deployed to the service. Python, for example, often requires binaries to match the architecture of the platform.
+
+The [LambCI project](https://github.com/lambci/lambci) makes this easy. The project publishes Docker images for each of the Lambda
+runtimes. In this case, we're using `python3.8` but the same general approach works for any runtime.
+
+GitHub Actions makes it easy to run parts of the build in specific Docker images, [using the **uses** tag](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses). In this case, we're installing the dependencies within the Docker image `lambci/lambda:build-python3.8`:
+
+```yaml
+- uses: actions/checkout@v2
+
+- name: Configure AWS credentials
+  uses: aws-actions/configure-aws-credentials@v1
+  with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
+
+- name: Install dependencies with LambCI
+  uses: docker://lambci/lambda:build-python3.8
+  with:
+      entrypoint: pip
+      args: install -r requirements.txt --target .
+
+- name: Bundle function with dependencies
+  run: |
+      zip -r build.zip .
+
+- name: Copy function zip file to S3
+  run: |
+      aws s3 cp build.zip s3://<bucket-name>/function.zip
+
+- name: Update function from S3
+  run: |
+      aws lambda update-function-code --function-name function --s3-bucket <bucket-name> --s3-key function.zip
+```
+
+<br />
+
+## Building a Lambda Layer
+
+Once a project reaches a certain scale, it's easy to exceed the 50mb function size limit with bundled dependencies.
+To solve this, large dependencies can be published in a **layer** and then excluded from the function bundle.
+
+When building both a layer and a function from the same GitHub repo, dependencies can be separated in two sets.
+For example with Python, two requirements files can be used: `requirements-layer.txt` and `requirements-function.txt`.
+
+```yaml
+- uses: actions/checkout@v2
+
+- name: Configure AWS credentials
+  uses: aws-actions/configure-aws-credentials@v1
+  with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
+
+- name: Install dependencies with LambCI
+  uses: docker://lambci/lambda:build-python3.8
+  with:
+      entrypoint: pip
+      args: install -r requirements.txt --target .
+
+- name: Bundle layer with dependencies
+  run: |
+      zip -r build.zip .
+
+- name: Copy layer zip file to S3
+  run: |
+      aws s3 cp build.zip s3://<bucket-name>/layer.zip
+
+- name: Publish layer from S3
+  run: |
+      aws lambda publish-layer-version --layer-name layer --content S3Bucket=<bucket-name>,S3Key=layer.zip
+```
+
+<br />
+
+## IAM Policy for GitHub Actions
+
+For GitHub to interact with AWS, create an IAM user and attach the policy below.
+Generate an access key for the new user and store the credentials in the repo's GitHub Secrets.
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "0",
+            "Effect": "Allow",
+            "Action": [
+                "iam:ListRoles",
+                "lambda:CreateFunction",
+                "lambda:UpdateFunctionCode",
+                "lambda:PublishLayerVersion",
+                "lambda:UpdateFunctionConfiguration",
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:PutObjectAcl"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+---
+
+<StayInTouch />

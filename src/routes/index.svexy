@@ -7,6 +7,7 @@ layout: index
 <script context="module">
     export async function preload() {
         const posts = [
+            import('./building-lambdas-github-actions.svexy'),
             import('./maps-tileproxy.svexy'),
             import('./vercel-sns-integration.svexy'),
             import('./dainte/introducing.svexy'),

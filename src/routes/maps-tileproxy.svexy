@@ -27,8 +27,8 @@ date_hr: Feb 8, 2021
 </script>
 
 <svelte:head>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <meta property="og:image" content="https://nathancahill.com/hiking.jpg" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<meta property="og:image" content="https://nathancahill.com/hiking.jpg" />
 </svelte:head>
 
 <style>
@@ -47,7 +47,6 @@ Two of my favorite things, exploring the mountains and mapping, intersect outdoo
 I'm always on the hunt for new, interesting maps. Gaia GPS is my go-to app for this stuff;
 I load it up with all the layers and data I can find.
 
-
 ![The author hiking in the mountains](/hiking.jpg)
 
 One map that I always keep handy is Bing Maps. Don't let the "Bing" part of the name deceive you, it's well known in the mapping industry for having one of the best free aerial layers. Microsoft combines orthographic aerial and satellite imagery, giving you detail that's not available from satellites alone. The tile service for the aerial layer isn't public, but Bing offers a generous free tier through the [Bing Maps Dev Center](https://www.bingmapsportal.com/) by signing up and creating an API key.
@@ -58,37 +57,37 @@ To get Bing Maps up and running on Gaia GPS or other apps, tile requests need to
 
 ```js
 function toQuadKey(x, y, z) {
-    var index = "";
+    var index = ''
     for (var i = z; i > 0; i--) {
-        var b = 0;
-        var mask = 1 << (i - 1);
-        if ((x & mask) !== 0) b++;
-        if ((y & mask) !== 0) b += 2;
-        index += b.toString();
+        var b = 0
+        var mask = 1 << (i - 1)
+        if ((x & mask) !== 0) b++
+        if ((y & mask) !== 0) b += 2
+        index += b.toString()
     }
-    return index;
+    return index
 }
 ```
 
-The catch is that this function must run for every slippy tile request so it can be converted on the fly to a quadtree key. Additionally, zooming or panning around a map can fire off a ton of requests simultaneously. Enter: [Cloudflare Workers](https://workers.cloudflare.com/). 
+The catch is that this function must run for every slippy tile request so it can be converted on the fly to a quadtree key. Additionally, zooming or panning around a map can fire off a ton of requests simultaneously. Enter: [Cloudflare Workers](https://workers.cloudflare.com/).
 
 For the uninitiated, Cloudflare Workers were basically designed for this type of workload. A worker is simply a JavaScript function that handles an HTTP request. In this case, the worker takes the incoming HTTP tile request, transforms it to a request that Bing understands, and sends the response back to the user.
 
-Unforunately, Bing doesn't make it quite that easy. Before any Bing layers can be loaded, the layer endpoint must be requested from the Bing Maps [Metadata API](https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata). 
+Unforunately, Bing doesn't make it quite that easy. Before any Bing layers can be loaded, the layer endpoint must be requested from the Bing Maps [Metadata API](https://docs.microsoft.com/en-us/bingmaps/rest-services/imagery/get-imagery-metadata).
 
 ```js
 > fetch('https://dev.virtualearth.net/REST/v1/Imagery/Metadata/{imagerySet}?key={key}&uriScheme=https')
 {
-  "resourceSets": [  
+  "resourceSets": [
     {
-      "resources": [  
-        {  
-          "imageUrl": "http:\/\/ecn.t3.tiles.virtualearth.net/tiles/{quadkey}.jpeg?g=471&mkt={culture}}",  
+      "resources": [
+        {
+          "imageUrl": "http:\/\/ecn.t3.tiles.virtualearth.net/tiles/{quadkey}.jpeg?g=471&mkt={culture}}",
           ...
         }
-      ]  
-    }  
-  ],  
+      ]
+    }
+  ],
   ...
 }
 ```
@@ -101,28 +100,29 @@ Using Cloudflare KV, the latest tile endpoint can be cached so it's reused for e
 
 ```js
 async function getCacheKey(imagerySet, key) {
-    const buffer = new TextEncoder("utf-8").encode(key);
-    const digest = await crypto.subtle.digest("SHA-1", buffer);
-    return `${imagerySet}:${digest}`;
+    const buffer = new TextEncoder('utf-8').encode(key)
+    const digest = await crypto.subtle.digest('SHA-1', buffer)
+    return `${imagerySet}:${digest}`
 }
 
 async function getTemplate(imagerySet, key) {
-    const cacheKey = await getCacheKey(imagerySet, key);
-    return ENDPOINTS.get(cacheKey);
+    const cacheKey = await getCacheKey(imagerySet, key)
+    return ENDPOINTS.get(cacheKey)
 }
 ```
 
 All that's left is to connect the pieces together. When a request hits the worker, the query string and URL path parameters are parsed:
 
 ```js
-const url = new URL(request.url);
-const query = [
-    ...new URLSearchParams(url.search.slice(1)).entries(),
-].reduce((q, [k, v]) => Object.assign(q, { [k]: v }), {});
+const url = new URL(request.url)
+const query = [...new URLSearchParams(url.search.slice(1)).entries()].reduce(
+    (q, [k, v]) => Object.assign(q, { [k]: v }),
+    {},
+)
 // { key: '<Bing Maps API key>', culture: 'en-US' }
 
-const m = url.pathname.match(/^\/(\w+)\/(\d+)\/(\d+)\/(\d+).jpg$/m);
-const [path, imagerySet, z, x, y] = m;
+const m = url.pathname.match(/^\/(\w+)\/(\d+)\/(\d+)\/(\d+).jpg$/m)
+const [path, imagerySet, z, x, y] = m
 // [path, 'Aerial', 1, 1, 1]
 ```
 
@@ -130,9 +130,9 @@ Then the tile URL template is retrieved from the cache,
 the `x`, `y` and `z` parameters are converted to a quadkey, and the actual tile is fetched from Bing:
 
 ```js
-const template = await getTemplate(imagerySet, query.key);
-const quadkey = toQuadKey(x, y, z);
-const tile = await fetchTile(template, quadkey, z, query.culture);
+const template = await getTemplate(imagerySet, query.key)
+const quadkey = toQuadKey(x, y, z)
+const tile = await fetchTile(template, quadkey, z, query.culture)
 ```
 
 Finally, the worker returns the proxied response:
@@ -142,26 +142,21 @@ return new Response(tile.body, {
     status: tile.status,
     statusText: tile.statusText,
     headers: tile.headers,
-});
+})
 ```
 
-The whole process is blazing fast since the worker and data store are deployed to Cloudflare endpoints around the globe. The tile proxy is basically transparent to the end user. No user data is stored, and it runs at no cost. 
+The whole process is blazing fast since the worker and data store are deployed to Cloudflare endpoints around the globe. The tile proxy is basically transparent to the end user. No user data is stored, and it runs at no cost.
 
 After writing this service almost a year ago, it's now handling around 50k requests per week with zero errors and no maintenance.
 
 ### Get started with the tile proxy
 
-<div class="ml-4">
-
-- Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
-- Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource)
-- For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
-- Check out the Bing Maps Aerial layer loaded via Cloudflare here:
-
-</div>
+-   Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
+-   Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource)
+-   For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
+-   Check out the Bing Maps Aerial layer loaded via Cloudflare here:
 
 <div class="mt-6" id="map"></div>
-
 
 ---
 

@@ -105,15 +105,15 @@ will be delivered:
 ```js
 await sns.publish({
     Message: JSON.stringify({
-        email: 'name@example.com'
+        email: 'name@example.com',
     }),
     TopicArn: 'arn:aws:sns:us-east-1:xxxxxxxxxx:signup',
     MessageAttributes: {
         origin: {
             DataType: 'String',
             StringValue: process.env.VERCEL_URL,
-        }
-    }
+        },
+    },
 })
 ```
 
@@ -123,12 +123,8 @@ filtering strategies can be implemented by the client instead.
 
 ### Get the integration
 
-<div class="ml-4">
-
-- Install the integration on Vercel here: https://vercel.com/integrations/sns
-- For the curious, check out the source code here: https://github.com/nathancahill/vercel-sns-integration
-
-</div>
+-   Install the integration on Vercel here: https://vercel.com/integrations/sns
+-   For the curious, check out the source code here: https://github.com/nathancahill/vercel-sns-integration
 
 ---
 

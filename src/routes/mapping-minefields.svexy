@@ -1,7 +1,7 @@
 ---
 title: Mapping Minefields in Bosnia & Herzegovina
 description: Georeferencing minefield data and making it available to the public with map overlays.
-path: /mapping.minefields.svexy
+path: /mapping-minefields
 date: 2021-02-20
 date_hr: Feb 20, 2021
 ---
@@ -22,13 +22,9 @@ The [Bosnia & Herzegovina Mine Action Center](http://www.bhmac.org)
 
 ### Get started with the minefield maps
 
-<div class="ml-4">
-
-- Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
-- Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource) to use from your phone
-- For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
-
-</div>
+-   Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
+-   Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource) to use from your phone
+-   For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
 
 ---
 

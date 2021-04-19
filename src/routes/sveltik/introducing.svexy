@@ -34,7 +34,8 @@ Sveltik compiles to ~11.2 kB gzipped.
 Sveltik manages your form's state and exposes it via `let:` directives to your HTML.
 
 ```html
-<script>    import { Sveltik } from 'sveltik'
+<script>
+    import { Sveltik } from 'sveltik'
 
     const initialValues = { email: '', password: '' }
 
@@ -80,9 +81,7 @@ Sveltik manages your form's state and exposes it via `let:` directives to your H
                 on:blur="{handleBlur}"
             />
             {#if errors.password && touched.password} {errors.password} {/if}
-            <button type="submit" disabled="{isSubmitting}">
-                Submit
-            </button>
+            <button type="submit" disabled="{isSubmitting}">Submit</button>
         </form>
     </Sveltik>
 </div>
@@ -95,7 +94,8 @@ While this low-level API is powerful for complex forms, a lot of the boilerplate
 can be simplified using `Form`, `Field` and `ErrorMessage` components.
 
 ```html
-<script>    import { Sveltik, Form, Field, ErrorMessage } from 'sveltik'
+<script>
+    import { Sveltik, Form, Field, ErrorMessage } from 'sveltik'
 
     const initialValues = { email: '', password: '' }
 
@@ -124,9 +124,7 @@ can be simplified using `Form`, `Field` and `ErrorMessage` components.
             <ErrorMessage name="email" as="div" />
             <Field type="password" name="password" />
             <ErrorMessage name="password" as="div" />
-            <button type="submit" disabled="{isSubmitting}">
-                Submit
-            </button>
+            <button type="submit" disabled="{isSubmitting}">Submit</button>
         </form>
     </Sveltik>
 </div>
@@ -160,30 +158,22 @@ currently deployed on 6 client projects, with 2 more coming online soon.
 There are a few Svelte bugs that currently keep the bundle size at around 11 kB.
 Once these are solved, I'm estimating that the bundle size should drop by around 30%.
 
-<div class="ml-4 markdown">
-
 -   [Select multiple value does not get set with spread props #4392](https://github.com/sveltejs/svelte/issues/4392)
 
-~~This issue requires a workaround in Sveltik, rendering an entirely separate component when
-`<Field>` is used to create a `<select multiple>` element or a `<input type="number" />` element.~~ **Update:** Resolved!
+-   ~~This issue requires a workaround in Sveltik, rendering an entirely separate component when
+    `<Field>` is used to create a `<select multiple>` element or a `<input type="number" />` element.~~ **Update:** Resolved!
 
 -   [Proposal: dynamic elements `<svelte:element>` #2324](https://github.com/sveltejs/svelte/issues/2324)
 
-This issue requires Sveltik to output HTML instead of DOM elements for `<ErrorMessage />`
-There are multiple workarounds but the dynamic elements proposal is the cleanest solution.
-
-</div>
+-   This issue requires Sveltik to output HTML instead of DOM elements for `<ErrorMessage />`
+    There are multiple workarounds but the dynamic elements proposal is the cleanest solution.
 
 ## Roadmap
 
 Although I haven't needed it yet internally, the next step on the roadmap
 is adding support for [Yup](https://github.com/jquense/yup) for form validations.
 
-<div class="ml-4 markdown">
-
 -   [Add support for Yup for form validation #1](https://github.com/nathancahill/sveltik/issues/9)
-
-</div>
 
 ---
 

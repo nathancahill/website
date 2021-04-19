@@ -27,7 +27,8 @@ Dainte's approach is batteries-included runtime testing. For example, given a co
 
 ```html
 <!-- App.svelte -->
-<script>    let answer = 42
+<script>
+    let answer = 42
 
     function add() {
         answer += 3
@@ -139,13 +140,11 @@ I built Dainte and have been using it on client projects as an alternative
 to [`jest-transform-svelte`](https://www.npmjs.com/package/jest-transform-svelte).
 It ticks some pain points by using a completely different approach to compiling Svelte code:
 
-<div class="ml-4 markdown mb-4">
-
 -   Plays nicely with other Jest plugins by not patching `require()`
 -   Every Dainte method has low-level configuration options so tests match production.
 -   Introspection and state assertions without touching the DOM.
 
-</div>
+<br />
 
 Read the full docs on the repo here: [github.com/nathancahill/dainte](https://github.com/nathancahill/dainte),
 and please open issues for any improvements or bug reports. And give it a star!

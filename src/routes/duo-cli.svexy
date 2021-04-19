@@ -1,0 +1,164 @@
+---
+title: Duo Mobile CLI
+description: Generating TOTP codes from the Duo Mobile app with a CLI.
+path: /duo-cli
+date: 2021-04-19
+date_hr: Apr 19, 2021
+---
+
+<script>
+    import StayInTouch from '../components/StayInTouch.svelte'
+</script>
+
+# {title}
+
+##### <time datetime="2021-04-19">Apr 19, 2021</time>
+
+<br />
+
+Do you ever sign in to a website with two-factor auth, then realize you don't have your phone nearby to retrieve the code? It would be nice to generate the same TOTP codes as your phone, right from your CLI. I use Duo Mobile to achieve this.
+
+Why Duo? It's one of the best authenticator apps for iOS:
+
+-   Third-party accounts are stored locally on the device, not synced to the cloud.
+-   OTP secrets are stored encrypted.
+-   Once encrypted, accounts are backed up natively with iOS, either to iCloud or locally.
+
+<br />
+
+## Backups
+
+iOS apps are provided with the `<Application_Home>/Documents` directory for documents that are [backed up automatically](https://developer.apple.com/icloud/documentation/data-storage/). Once an encryption password has been set in the app, Duo writes the list of third-party accounts to a binary plist within that directory: `com.duosecurity.DuoMobile.plist`
+
+Parsing the file is easy enough since Python includes [plistlib](https://docs.python.org/3/library/plistlib.html) in the stdlib:
+
+```python
+import plistlib
+
+with open("com.duosecurity.DuoMobile.plist", "rb") as f:
+    plist = plistlib.load(f, fmt=plistlib.FMT_BINARY)
+```
+
+The structure of the plist is simple. Abbreviated here:
+
+-   `DUOSortedAccountInfoArrayKey`
+    -   Array
+        -   `serviceName`
+        -   `displayLabel`
+        -   `encryptedOTPString` (This is what we need to generate OTPs)
+-   `kBackupEncryptionStoreDerivationParamsDictKey`
+    -   `memLimitKey`
+    -   `opsLimitKey`
+    -   `passwordSaltKey`
+-   `kBackupEncryptionStoreEncryptedTestStringKey`
+
+<br />
+
+## Encryption
+
+The `memLimit` and `opsLimit` params look familiar from [libsodium](https://github.com/jedisct1/libsodium), so that seems like a good place to start reversing the encryption method. Conveniently, the plist gives us an encrypted string for testing with. It looks like two base64-encoded strings joined with a colon. Since the second string is 20 bytes, I'm guessing ciphertext and nonce:
+
+```python
+import base64
+
+test_string = "mohgd+mzkw6z8qkqA1IeWIxZ3WeafeH5OLoTDgcL3y2Asg7S2x3PO40CrWrgyerEdm9qVw==:pQJBe+rUv/Iv8Dc1oPtvjSJ/9UHxVmji"
+[cipher, nonce] = test_string.split(":")
+cipher = base64.b64decode(cipher)
+nonce = base64.b64decode(nonce)
+```
+
+We've got the rest of the parameters from the plist, and we know the password since we set it in the app, so we can try plugging the values in. Trying here with `argon2id`:
+
+```python
+import nacl.secret
+import nacl.pwhash
+
+params = plist["kBackupEncryptionStoreDerivationParamsDictKey"]
+salt = params["passwordSaltKey"]
+opslimit = params["opsLimitKey"]
+memlimit = params["memLimitKey"]
+
+key = nacl.pwhash.argon2id.kdf(
+    nacl.secret.SecretBox.KEY_SIZE,
+    password,
+    salt,
+    opslimit=opslimit,
+    memlimit=memlimit,
+)
+
+box = nacl.secret.SecretBox(key)
+```
+
+```python
+>>> box.decrypt(cipher, nonce)
+"VDD40B86F-F945-4FB1-A4C2-589BA2C75195"
+```
+
+Boom! Plaintext of the test string.
+
+<br />
+
+## Generating OTPs
+
+Now that we know the encryption method, we can decrypt the OTP secrets for each account and generate TOTP codes. Secrets vary in length. Of my ~40 accounts, most secrets are 20 bytes and a few a 10 or 16 bytes. Cloudflare's is the longest at 40 bytes. Just like the test string, each encrypted secret is base64-encoded and formatted as `"{cipher}:{nonce}"`
+
+[Passlib](https://passlib.readthedocs.io/en/stable/lib/passlib.totp.html), unlike other OTP libraries, makes it easy to pass raw bytes to the TOTP generator, compared to strings that other libraries expect:
+
+```python
+import passlib.totp
+
+[cipher, nonce] = encrypted_otp_string.split(":")
+cipher = base64.b64decode(cipher)
+nonce = base64.b64decode(nonce)
+secret = box.decrypt(cipher, nonce)
+
+otp = passlib.totp.TOTP(key=secret, format="raw")
+```
+
+```python
+>>> otp.generate().token
+123456
+```
+
+<br />
+
+## Wrap it in a CLI
+
+Using the Click framework, it's fairly simple to wrap this functionality in a CLI:
+
+```bash
+$ otp --help
+Usage: otp [ACCOUNT] [OPTIONS]
+
+Options:
+  --password TEXT  Duo Mobile backup encryption password.
+  --no-copy        Disable copying to clipboard.
+  --help           Show this message and exit.
+```
+
+If you don't pass your password as an option, you will be prompted to enter it to decrypt the OTP secret. It's also possible to save your password in `~/.otp/config.json` so decryption happens automatically.
+
+```json
+{
+    "password": "hunter2"
+}
+```
+
+The TOTP code is automatically copied to the clipboard, unless `--no-copy` is passed or if copy is disabled in the configuration:
+
+```json
+{
+    "copy": false
+}
+```
+
+<br />
+
+## Getting the Plist File
+
+On first run, you'll be prompted for the path to the plist file `com.duosecurity.DuoMobile.plist`.
+If your iOS device is set to backup locally, `otp` will search the most recent backup automatically for the file. If your iOS device is backed up to iCloud, you can't retrieve the file without jailbreaking.
+
+---
+
+<StayInTouch />

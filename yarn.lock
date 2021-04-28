@@ -3136,12 +3136,13 @@ markdown-it-prism@^2.1.6:
   dependencies:
     prismjs "1.23.0"
 
-mdsvex@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.9.1.tgz#1e1d018eaca0306cc5b7f5bf1d13c734d66961d4"
-  integrity sha512-9gFMUdJZP44Nrv5CWcSuiSiZpXdX6igWPQ2mRwf4BTU7zh6bdGiOUjv4YpACAsRzRIXV+Fptl0+DYxAie+X3HA==
+mdsvex@^0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.9.2.tgz#9f0c8b7afdc8b57f4581f0858f366bb8c359ff9c"
+  integrity sha512-z1vIccTRNjBOiP1C+r8IUAtyIOzKa0hwC7jepGwmiaHgnJee7ckhfeOb0fjpaRGi8+5SMEabEazM6ENTonv/+A==
   dependencies:
     "@types/unist" "^2.0.3"
+    prism-svelte "^0.4.7"
     prismjs "^1.17.1"
     vfile-message "^2.0.4"
 
@@ -3656,6 +3657,11 @@ pretty-hrtime@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
+
+prism-svelte@^0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/prism-svelte/-/prism-svelte-0.4.7.tgz#fbc6709450b4e2ed660ddb82c3718817fc584cbe"
+  integrity sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==
 
 prismjs@1.23.0, prismjs@^1.17.1:
   version "1.23.0"

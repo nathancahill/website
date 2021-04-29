@@ -3136,10 +3136,10 @@ markdown-it-prism@^2.1.6:
   dependencies:
     prismjs "1.23.0"
 
-mdsvex@^0.9.2:
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.9.2.tgz#9f0c8b7afdc8b57f4581f0858f366bb8c359ff9c"
-  integrity sha512-z1vIccTRNjBOiP1C+r8IUAtyIOzKa0hwC7jepGwmiaHgnJee7ckhfeOb0fjpaRGi8+5SMEabEazM6ENTonv/+A==
+mdsvex@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/mdsvex/-/mdsvex-0.9.3.tgz#ff5b5f9c17ca39cb67454654ed63ff1c84df592f"
+  integrity sha512-BybdSeHihCZtydCJkFv+CZesHHYElZEp47WvYUszdfdqt6guIW/dP8H7fyrsaY6RPFfXgzGavZHB07OysuQTuQ==
   dependencies:
     "@types/unist" "^2.0.3"
     prism-svelte "^0.4.7"

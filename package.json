@@ -38,7 +38,7 @@
         "eslint": "^7.26.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-import": "^2.23.2",
+        "eslint-plugin-import": "^2.23.3",
         "isomorphic-fetch": "^3.0.0",
         "leaflet": "^1.7.1",
         "less": "^4.1.1",

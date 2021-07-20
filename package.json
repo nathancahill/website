@@ -34,7 +34,7 @@
         "@rollup/plugin-replace": "^3.0.0",
         "@tailwindcss/ui": "^0.7.2",
         "autoprefixer": "^10.3.1",
-        "cypress": "^7.7.0",
+        "cypress": "^8.0.0",
         "eslint": "^7.31.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-prettier": "^8.3.0",

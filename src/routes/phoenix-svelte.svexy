@@ -1,0 +1,260 @@
+---
+title: Transitional Apps with Phoenix and Svelte
+description: Building robust transitional apps with Phoenix and Svelte.
+path: /phoenix-svelte
+date: 2022-07-25
+date_hr: Jul 25, 2022
+---
+
+<script>
+    import StayInTouch from '../components/StayInTouch.svelte'
+</script>
+
+# {title}
+
+##### <time datetime="{date}">{date_hr}</time>
+
+<br />
+
+Transitional apps is a tern coined by Rich Harris, creator of Svelte. Transitional apps as a category fall in between
+traditional, document-based websites and single-page apps (SPAs). You can watch Rich's [full interview on #transitionalapps here](https://www.youtube.com/watch?v=860d8usGC0o),
+but in general, it's a fascinating concept for adding interactivity to websites while maintaining many of the qualities
+of traditional websites.
+
+The Elixir web framework Phoenix provides a built-in way to build this type of transitional apps with [Phoenix.LiveView](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html). LiveView adds interactivity to server-rendered HTML with a lifecycle of events. Normal views in Phoenix uses the Elixir templating language EEx to execute Elixir expressions and interpolate the results in the template:
+
+```elixir
+<%= if some_condition? do %>
+    <p>User is <%= @username %></p>
+<% else %>
+    <p>Otherwise</p>
+<% end %>
+```
+
+LiveView extends this templating language by adding `phx-` attributes to mark elements as interactive:
+
+```html
+<button phx-click="inc_temperature">+</button>
+```
+
+Clicking this button sends the `inc_temperature` event over a websocket connection to the server, where the socket state can be updated and any necesary HTML changes sent back to the client.
+
+## Using Svelte in LiveView
+
+Conceptually, LiveView has a lot of similarities with Svelte. Computing minimal DOM mutations beforehand on the server (Phoenix) or compiler (Svelte) rather than in the browser. Minimizing the JavaScript runtime necesary in the browser and simplifying the event lifecycle in to verbs HTTP understands like `GET` and `POST`. These are core concepts of transitional apps, approached from different angles.
+
+So when we need to build more client-side functionality than what Phoenix LiveView can provide, Svelte is a natural choice. Especially with the [Phoenix 1.6 release](https://www.phoenixframework.org/blog/phoenix-1.6-released), the default JavaScript build tool [is now esbuild](https://fly.io/blog/phoenix-moves-to-esbuild-for-assets/), which makes integrating Svelte on the frontend a piece of cake.
+
+Here's a minimal [client hook](https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook) for loading and instantiating a Svelte component within a LiveView. The DOM attribute `phx-update="ignore"` tells LiveView
+that the hook controls the content of the DOM element and it should not be modified by the server:
+
+```html
+<div phx-hook="ComponentHook" phx-update="ignore"></div>
+```
+
+```js
+export const ComponentHook = {
+    async mounted() {
+        const { default: Hello } = await import('./components/Hello.svelte')
+
+        this.component = new Hello({
+            target: this.el,
+        })
+    },
+
+    destroyed() {
+        this.component.$destroy()
+    },
+}
+```
+
+## Receiving Phoenix LiveView events in Svelte
+
+LiveView's event lifecycle over websocket is straight-forward to integrate with Svelte. One approach is using HTML data
+attributes to transfer socket state to the component. When the data attribute is updated by Phoenix, we can push the updated value to Svelte:
+
+```html
+<div phx-hook="ComponentHook" phx-update="ignore" data-msg="{@msg}"></div>
+```
+
+```js
+export const ComponentHook = {
+    async mounted() {
+        const { default: Hello } = await import('./components/Hello.svelte')
+
+        this.component = new Hello({
+            target: this.el,
+            props: {
+                // Initial data attribute value
+                msg: this.el.dataset.msg,
+            },
+        })
+    },
+
+    // Listen to data attribute updates and pass data to Svelte
+    updated() {
+        this.component.$set({
+            msg: this.el.dataset.msg,
+        })
+    },
+
+    destroyed() {
+        this.component.$destroy()
+    },
+}
+```
+
+The downside with the approach is that any state is string encoded as a DOM attribute. A better approach for complex data
+objects is to listen to Phoenix events directly. This can be done from the LiveView hook:
+
+```js
+export const ComponentHook = {
+    async mounted() {
+        const { default: Hello } = await import('./components/Hello.svelte')
+
+        this.component = new Hello({
+            target: this.el,
+        })
+
+        // Listen to socket events and pass data to Svelte
+        this.handleEvent('update', ({ msg }) => {
+            this.component.$set({ msg })
+        })
+    },
+
+    destroyed() {
+        this.component.$destroy()
+    },
+}
+```
+
+Or from within the Svelte component, where we listen to the `phx:update` event on `svelte:window`:
+
+```html
+<script>
+    export let msg
+
+    // Listen to socket events within Svelte
+    const handleUpdate = e => {
+        msg = e.detail.msg
+    }
+</script>
+
+<svelte:window on:phx:update="{handleUpdate}" />
+```
+
+## Pushing events from Svelte to Phoenix LiveView
+
+On the flip-side, to push events from Svelte to the server we need to pass the Hook `pushEvent` function to the Svelte component:
+
+```js
+export const ComponentHook = {
+    async mounted() {
+        const { default: Hello } = await import('./components/Hello.svelte')
+
+        this.component = new Hello({
+            target: this.el,
+            props: {
+                // Bound to the this context of the hook
+                pushEvent: this.pushEvent.bind(this),
+            },
+        })
+    },
+
+    destroyed() {
+        this.component.$destroy()
+    },
+}
+```
+
+```html
+<script>
+    export let pushEvent
+
+    const handleSubmit = () => {
+        pushEvent('submit', { value })
+    }
+</script>
+```
+
+And recieving the pushed event in Phoenix:
+
+```elixir
+@impl true
+def handle_event("submit", params, socket) do
+    {:noreply, socket}
+end
+```
+
+## Route-based code-splitting optimization
+
+Since Svelte components are loaded in the browser with Phoenix client hooks, we can optimize the JavaScript bundle
+to only include components that are used on a page. In the hook, the Svelte component should be loaded asynchronously:
+
+```js
+const { default: Hello } = await import('./components/Hello.svelte')
+```
+
+The Phoenix eslint config should be updated to enable code-splitting and ESM modules:
+
+```js
+let opts = {
+    entryPoints: ['js/app.js'],
+    bundle: true,
+
+    // ESM modules
+    format: 'esm',
+
+    // Code splitting
+    splitting: true,
+    chunkNames: 'chunks/[name]-[hash]',
+
+    target: 'es2017',
+    outdir: '../priv/static/assets',
+    logLevel: 'info',
+    loader,
+    plugins,
+}
+```
+
+Further, the Phoenix root layout should be switched from `type="application/javascript"` to `type="module"` to support loading the JavaScript chunks:
+
+```jsx
+<script type="module" defer phx-track-static src={Routes.static_path(@conn, "/assets/app.js")} />
+```
+
+Now, only the minimal code needed to render each route is sent over the wire to the browser.
+
+## Future steps
+
+Currently, there's no server-side rendering for Svelte components within Phoenix LiveView. A workaround is to have
+content from the EEx template in the DOM element where Svelte renders, emulating browser hydration.
+For that to work, Svelte components must be compiled with the `hydratable: true` option in the esbuild config:
+
+```js
+const plugins = [
+    esbuildSvelte({
+        compilerOptions: {
+            // Required to replace node content
+            hydratable: true,
+        },
+    }),
+]
+```
+
+And `hydrate: true` when instantiated:
+
+```js
+this.component = new Hello({
+    target: this.el,
+    // Required to replace node content
+    hydrate: true,
+})
+```
+
+All told, the combination of Phoenix and Svelte yields a really powerful stack for building transitional apps. Both frameworks
+play to their strengths with Phoenix on the backend and Svelte on the frontend. Excited to see how the two continue to evolve.
+
+---
+
+<StayInTouch />

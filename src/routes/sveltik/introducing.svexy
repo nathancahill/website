@@ -163,10 +163,10 @@ Once these are solved, I'm estimating that the bundle size should drop by around
 -   ~~This issue requires a workaround in Sveltik, rendering an entirely separate component when
     `<Field>` is used to create a `<select multiple>` element or a `<input type="number" />` element.~~ **Update:** Resolved!
 
--   [Proposal: dynamic elements `<svelte:element>` #2324](https://github.com/sveltejs/svelte/issues/2324)
+-   Proposal: dynamic elements `<svelte:element>`
 
--   This issue requires Sveltik to output HTML instead of DOM elements for `<ErrorMessage />`
-    There are multiple workarounds but the dynamic elements proposal is the cleanest solution.
+-   ~~This issue requires Sveltik to output HTML instead of DOM elements for `<ErrorMessage />`
+    There are multiple workarounds but the dynamic elements proposal is the cleanest solution.~~ **Update:** Resolved in [#6898](https://github.com/sveltejs/svelte/pull/6898)!
 
 ## Roadmap
 

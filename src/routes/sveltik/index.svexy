@@ -1,9 +1,0 @@
----
-title: Sveltik
-description: Powerful forms in Svelte, inspired by Formik. Manage your form’s state and validation.
-path: /sveltik
----
-
-<h1>{title}</h1>
-
-[View the docs on GitHub](https://github.com/nathancahill/sveltik).

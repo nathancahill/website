@@ -12,12 +12,18 @@
 
 <div class="markdown">
 	<p>
-		<em>Hello,</em> I'm Nathan Cahill &mdash; a full-stack developer and outdoor photographer. I live
-		and work while travelling the world with my wife and two dogs. I'm an ardent champion of building
-		towards a high&#8209;performance, low&#8209;bandwidth web.
+		<em>Hello,</em> I'm Nathan Cahill &mdash; a software engineer, athlete and outdoor photographer. I
+		live and work while travelling the world with my wife, son and two dogs. I'm an ardent champion of
+		building towards a high&#8209;performance, low&#8209;bandwidth web.
 	</p>
 
-	<p>When I'm not working, you'll find me rock climbing, skiing or surfing with my pups.</p>
+	<p>
+		I'm the creator of the open source <a href="https://velastack.dev">VelaStack</a> project and the
+		<a href="https://velabase.dev">VelaBase</a>
+		platform, where we're building the web for emerging markets. I also run the
+		<a href="https://www.goatmaps.com">Goat Maps</a> outdoor mapping app. When I'm not working, you'll
+		find me rock climbing, running, cycling, skiing or surfing with my pups.
+	</p>
 </div>
 
 <h2 class="mt-12 text-2xl font-bold">Recent posts</h2>
@@ -49,13 +55,7 @@
 
 <div class="markdown mb-32">
 	<p>
-		I'm keen on compiler-driven frontends (like <a href="https://svelte.dev/">Svelte</a>),
-		data-driven backends (like <a href="http://postgrest.org/">Postgrest</a>,
-		<a href="https://graphql.org/">GraphQL</a> and
-		<a href="https://github.com/simonw/datasette/">Datasette</a>), utility-first design (like
-		<a href="https://tailwindcss.com/">Tailwind CSS</a>) and serverless functions (like
-		<a href="https://developers.cloudflare.com/workers/">Cloudflare Workers</a> and
-		<a href="https://vercel.com/">Vercel</a>). If we have common interests or if you just want to
-		say hi, shoot me a note: nathan@nathancahill.com.
+		I'm keen on finding intersections between tech and other walks of life. If we have common
+		interests or if you just want to say hi, shoot me a note: nathan@nathancahill.com.
 	</p>
 </div>

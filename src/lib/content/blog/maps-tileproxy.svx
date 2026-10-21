@@ -10,7 +10,7 @@ image: /hiking.jpg
 </script>
 
 Two of my favorite things, exploring the mountains and mapping, intersect outdoors with GPS apps.
-I'm always on the hunt for new, interesting maps. Gaia GPS is my go-to app for this stuff;
+I'm always on the hunt for new, interesting maps. [Goat Maps](https://www.goatmaps.com/) is my go-to app for this stuff;
 I load it up with all the layers and data I can find.
 
 ![The author hiking in the mountains](/hiking.jpg)
@@ -19,7 +19,7 @@ One map that I always keep handy is Bing Maps. Don't let the "Bing" part of the 
 
 ## Serving Bing Maps as Slippy Tiles
 
-To get Bing Maps up and running on Gaia GPS or other apps, tile requests need to be converted from the Open Street Map standard [slippy tiles](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) to the (appropriately named) [Bing Maps Tile System](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system). Bing's system is based on the [quadtree algorithm](https://en.wikipedia.org/wiki/Quadtree), so the function for converting a slippy tile with `x`, `y` and `z` keys to a quadtree key is simple enough:
+To get Bing Maps up and running on Goat Maps or other apps, tile requests need to be converted from the Open Street Map standard [slippy tiles](https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames) to the (appropriately named) [Bing Maps Tile System](https://docs.microsoft.com/en-us/bingmaps/articles/bing-maps-tile-system). Bing's system is based on the [quadtree algorithm](https://en.wikipedia.org/wiki/Quadtree), so the function for converting a slippy tile with `x`, `y` and `z` keys to a quadtree key is simple enough:
 
 ```js
 function toQuadKey(x, y, z) {
@@ -118,7 +118,7 @@ After writing this service almost a year ago, it's now handling around 50k reque
 ### Get started with the tile proxy
 
 -   Get started with the Bing Maps Tile Proxy here: https://tileproxy.mapgrid.org
--   Add the layer to [Gaia GPS](https://www.gaiagps.com/map/?sidebar=customSource)
+-   Add the layer to [Goat Maps](https://www.goatmaps.com/)
 -   For the curious, check out the full source code here: https://github.com/nathancahill/tile-proxy-bing
 -   Check out the Bing Maps Aerial layer loaded via Cloudflare here:
 
